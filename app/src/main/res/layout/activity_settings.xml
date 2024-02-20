@@ -16,12 +16,14 @@
         android:paddingBottom="36dp">
 
         <ImageView
+            android:id="@+id/back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/back"
             android:paddingEnd="@dimen/top_bottom_padding"
             android:backgroundTint="@color/black"
             android:layout_gravity="center"
+            android:foreground="?attr/selectableItemBackground"
             tools:ignore="RtlSymmetry" />
 
         <TextView

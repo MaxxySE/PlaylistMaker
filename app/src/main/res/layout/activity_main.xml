@@ -27,6 +27,7 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/search_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/button_padding"
@@ -44,6 +45,7 @@
             />
 
         <Button
+            android:id="@+id/library_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@color/white"
@@ -61,6 +63,7 @@
             app:iconTint="@color/black"/>
 
         <Button
+            android:id="@+id/settings_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/button_padding"
