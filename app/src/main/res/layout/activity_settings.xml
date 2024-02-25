@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/SettingsBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
     android:padding="@dimen/layout_padding">
 
@@ -15,40 +15,19 @@
         android:orientation="horizontal"
         android:paddingBottom="36dp">
 
-        <ImageView
+        <ImageView style="@style/SettingsBackButton"
             android:id="@+id/back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/back"
-            android:paddingEnd="@dimen/top_bottom_padding"
-            android:backgroundTint="@color/black"
-            android:layout_gravity="center"
-            android:foreground="?attr/selectableItemBackground"
-            tools:ignore="RtlSymmetry" />
+            app:srcCompat="@drawable/back" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/big_text_size"
-            android:fontFamily="@font/ys_display_medium"/>
+        <TextView style="@style/SettingsTitle"
+            android:text="@string/settings" />
 
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/settings_padding"
-        android:paddingBottom="@dimen/settings_padding">
+    <FrameLayout style="@style/SettingsFrame">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dark_theme"
-            android:textColor="@color/black"
-            android:textSize="@dimen/medium_text_size"
-            android:fontFamily="@font/ys_display_regular"/>
+        <TextView style="@style/SettingsText"
+            android:text="@string/dark_theme" />
 
         <Switch
             android:layout_width="wrap_content"
@@ -56,75 +35,35 @@
             android:layout_gravity="end"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
+    </FrameLayout>
+
+    <FrameLayout style="@style/SettingsFrame">
+
+        <TextView style="@style/SettingsText"
+            android:text="@string/share_app" />
+
+        <ImageView style="@style/SettingsIcon"
+            app:srcCompat="@drawable/share" />
 
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/settings_padding"
-        android:paddingTop="@dimen/settings_padding">
+    <FrameLayout style="@style/SettingsFrame">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/share_app"
-            android:textSize="@dimen/medium_text_size"
-            android:textColor="@color/black"
-            android:fontFamily="@font/ys_display_regular"/>
+        <TextView style="@style/SettingsText"
+            android:text="@string/support" />
 
-        <ImageView
-            android:layout_width="@dimen/settings_icon_size"
-            android:layout_height="@dimen/settings_icon_size"
-            app:srcCompat="@drawable/share"
-            android:layout_gravity="end"
-            tools:ignore="RtlSymmetry" />
+        <ImageView style="@style/SettingsIcon"
+            app:srcCompat="@drawable/support" />
 
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/settings_padding"
-        android:paddingTop="@dimen/settings_padding">
+    <FrameLayout style="@style/SettingsFrame">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/support"
-            android:textColor="@color/black"
-            android:textSize="@dimen/medium_text_size"
-            android:fontFamily="@font/ys_display_regular"/>
+        <TextView style="@style/SettingsText"
+            android:text="@string/user_agreement" />
 
-        <ImageView
-            android:layout_width="@dimen/settings_icon_size"
-            android:layout_height="@dimen/settings_icon_size"
-            app:srcCompat="@drawable/support"
-            android:layout_gravity="end"
-            tools:ignore="RtlSymmetry" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/settings_padding"
-        android:paddingTop="@dimen/settings_padding">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/user_agreement"
-            android:textColor="@color/black"
-            android:textSize="@dimen/medium_text_size"
-            android:fontFamily="@font/ys_display_regular"/>
-
-        <ImageView
-            android:layout_width="@dimen/settings_icon_size"
-            android:layout_height="@dimen/settings_icon_size"
-            app:srcCompat="@drawable/user_agree"
-            android:layout_gravity="end"
-            tools:ignore="RtlSymmetry" />
+        <ImageView style="@style/SettingsIcon"
+            app:srcCompat="@drawable/user_agree" />
 
     </FrameLayout>
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SettingsBackground">
+        <item name="android:background">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="SettingsTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textSize">@dimen/big_text_size</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="SettingsBackButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingEnd">@dimen/top_bottom_padding</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:tint">?attr/colorOnSecondary</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="SettingsText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="SettingsFrame">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/settings_padding</item>
+        <item name="android:paddingBottom">@dimen/settings_padding</item>
+    </style>
+
+    <style name="SettingsIcon">
+        <item name="android:layout_width">@dimen/settings_icon_size</item>
+        <item name="android:layout_height">@dimen/settings_icon_size</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+
+    <style name="MainScreenButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/big_text_size</item>
+        <item name="cornerRadius">@dimen/button_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="android:backgroundTint">?attr/colorOnPrimary</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="iconTint">?attr/colorOnSecondary</item>
+
+    </style>
+
+</resources>
