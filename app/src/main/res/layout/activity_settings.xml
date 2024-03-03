@@ -37,7 +37,8 @@
 
     </FrameLayout>
 
-    <FrameLayout style="@style/SettingsFrame">
+    <FrameLayout style="@style/SettingsFrame"
+        android:id="@+id/share_btn">
 
         <TextView style="@style/SettingsText"
             android:text="@string/share_app" />
@@ -47,7 +48,8 @@
 
     </FrameLayout>
 
-    <FrameLayout style="@style/SettingsFrame">
+    <FrameLayout style="@style/SettingsFrame"
+        android:id="@+id/support_btn">
 
         <TextView style="@style/SettingsText"
             android:text="@string/support" />
@@ -57,7 +59,8 @@
 
     </FrameLayout>
 
-    <FrameLayout style="@style/SettingsFrame">
+    <FrameLayout style="@style/SettingsFrame"
+        android:id="@+id/user_agreement_btn">
 
         <TextView style="@style/SettingsText"
             android:text="@string/user_agreement" />
