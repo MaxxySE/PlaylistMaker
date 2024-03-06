@@ -14,4 +14,5 @@
     <string name="user_agreement_link" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
     <string name="mail_intent_data" translatable="false">mailto:</string>
     <string name="intent_type_text" translatable="false">text/plain</string>
+    <string name="search_title" translatable="false">Поиск</string>
 </resources>
