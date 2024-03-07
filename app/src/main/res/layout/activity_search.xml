@@ -37,7 +37,7 @@
 
         <ImageView style="@style/EditTextRightBtn"
             android:id="@+id/clear_btn"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"/>
+            app:srcCompat="@drawable/clear_button"/>
 
     </FrameLayout>
 
