@@ -8,4 +8,7 @@
     <dimen name="top_bottom_padding">28dp</dimen>
     <dimen name="settings_padding">21dp</dimen>
     <dimen name="settings_icon_size">24dp</dimen>
+    <dimen name="searchbar_radius">8dp</dimen>
+    <dimen name="edittext_icon_padding">8dp</dimen>
+    <dimen name="edittext_padding">9dp</dimen>
 </resources>
