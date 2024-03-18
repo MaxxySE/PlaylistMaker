@@ -26,7 +26,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/settings_icon_size">
 
         <EditText style="@style/EditText"
             android:id="@+id/search_edittext"
@@ -41,7 +42,10 @@
 
     </FrameLayout>
 
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </LinearLayout>
