@@ -11,4 +11,7 @@
     <dimen name="searchbar_radius">8dp</dimen>
     <dimen name="edittext_icon_padding">8dp</dimen>
     <dimen name="edittext_padding">9dp</dimen>
+    <dimen name="track_subtext">12sp</dimen>
+    <dimen name="separate_dot">4dp</dimen>
+    <dimen name="track_padding">36dp</dimen>
 </resources>

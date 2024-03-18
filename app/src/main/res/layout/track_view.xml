@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/edittext_icon_padding"
+    android:paddingBottom="@dimen/edittext_icon_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/track_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/placeholder"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingStart="@dimen/button_padding"
+            android:paddingEnd="@dimen/track_padding"
+            android:orientation="vertical">
+
+            <TextView style="@style/TrackName"
+                android:id="@+id/track_name"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="@string/track_artist_ph" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView style="@style/TrackSubtext"
+                    android:id="@+id/track_artist"
+                    android:text="@string/track_artist_ph" />
+
+                <ImageView style="@style/SeparateDot"
+                    android:src="@drawable/separate_dot" />
+
+                <TextView style="@style/TrackSubtext"
+                    android:id="@+id/track_time"
+                    android:text="@string/track_time_ph" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView style="@style/TrackButton"
+        android:id="@+id/track_btn"
+        android:src="@drawable/user_agree" />
+
+</FrameLayout>

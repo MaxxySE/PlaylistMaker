@@ -9,6 +9,40 @@
         <item name="android:background">@color/blue_back</item>
     </style>
 
+    <style name="TrackButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center|end</item>
+        <item name="android:tint">@color/searchbar_text_light</item>
+    </style>
+
+    <style name="TrackName">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="SeparateDot">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingStart">@dimen/separate_dot</item>
+        <item name="android:paddingEnd">@dimen/separate_dot</item>
+        <item name="android:tint">@color/searchbar_text_light</item>
+    </style>
+
+    <style name="TrackSubtext">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/track_subtext</item>
+        <item name="android:textColor">@color/searchbar_text_light</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
     <style name="Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

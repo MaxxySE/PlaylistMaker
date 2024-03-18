@@ -15,4 +15,7 @@
     <string name="mail_intent_data" translatable="false">mailto:</string>
     <string name="intent_type_text" translatable="false">text/plain</string>
     <string name="search_title" translatable="false">Поиск</string>
+    <string name="track_name_ph" translatable="false">Artist name</string>
+    <string name="track_artist_ph" translatable="false">Name</string>
+    <string name="track_time_ph" translatable="false">9:99</string>
 </resources>
