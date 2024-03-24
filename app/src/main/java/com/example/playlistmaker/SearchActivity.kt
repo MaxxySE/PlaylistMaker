@@ -30,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val baseUrl = "https://itunes.apple.com"
     private lateinit var playlistAdapter : PlaylistAdapter
-    private val historyAdapter = HistoryAdapter()
+    private lateinit var historyAdapter : HistoryAdapter
     private val trackApi = RetrofitInit().getRetrofit(baseUrl).create(TrackApi::class.java)
 
     private val constData = ConstData()
@@ -83,6 +83,7 @@ class SearchActivity : AppCompatActivity() {
         historyRecycler = findViewById(R.id.history_recycler)
 
         playlistAdapter = PlaylistAdapter(this)
+        historyAdapter = HistoryAdapter(this)
     }
 
     private fun setSearchRecycler(){
@@ -177,11 +178,13 @@ class SearchActivity : AppCompatActivity() {
                             trackList.clear()
                             playlistAdapter.notifyDataSetChanged()
                             notFoundView.visibility = View.VISIBLE
+                            noServiceView.visibility = View.GONE
                         }
                     } else {
                         trackList.clear()
                         playlistAdapter.notifyDataSetChanged()
                         noServiceView.visibility = View.VISIBLE
+                        notFoundView.visibility = View.GONE
                     }
                 }
 
@@ -190,6 +193,7 @@ class SearchActivity : AppCompatActivity() {
                     trackList.clear()
                     playlistAdapter.notifyDataSetChanged()
                     noServiceView.visibility = View.VISIBLE
+                    notFoundView.visibility = View.GONE
                 }
             })
         }
@@ -215,6 +219,8 @@ class SearchActivity : AppCompatActivity() {
                         historyView.visibility = View.VISIBLE
                         trackList.clear()
                         playlistAdapter.notifyDataSetChanged()
+                        notFoundView.visibility = View.GONE
+                        noServiceView.visibility = View.GONE
                     } else {
                         historyView.visibility = View.GONE
                     }

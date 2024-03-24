@@ -47,6 +47,7 @@ class SearchHistory (
     }
 
     fun clearHistory(){
+        historyTrackList.clear()
         sharedPreferences.edit()
             .remove(constData.getSearchHistoryKey())
             .apply()
