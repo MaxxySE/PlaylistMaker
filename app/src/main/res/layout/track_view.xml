@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:foreground="?attr/selectableItemBackground"
     android:paddingTop="@dimen/edittext_icon_padding"
     android:paddingBottom="@dimen/edittext_icon_padding">
 

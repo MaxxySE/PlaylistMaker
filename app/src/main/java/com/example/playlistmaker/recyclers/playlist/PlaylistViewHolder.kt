@@ -1,4 +1,4 @@
-package com.example.playlistmaker.playlist_recycler
+package com.example.playlistmaker.recyclers.playlist
 
 import android.icu.text.SimpleDateFormat
 import android.view.View
