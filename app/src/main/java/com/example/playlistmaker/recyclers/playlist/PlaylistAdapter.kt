@@ -2,12 +2,15 @@ package com.example.playlistmaker.recyclers.playlist
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.LibraryActivity
 import com.example.playlistmaker.MainActivity
+import com.example.playlistmaker.PlayerActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.additional.ConstData
 import com.example.playlistmaker.additional.SearchHistory
@@ -31,6 +34,9 @@ class PlaylistAdapter(private val context : Context) : RecyclerView.Adapter<Play
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         holder.bind(trackList[position])
         holder.itemView.setOnClickListener {
+            val playerIntent = Intent(context, PlayerActivity::class.java)
+            playerIntent.putExtra("track", trackList[position])
+            context.startActivity(playerIntent)
             searchHistory.saveTrackToList(trackList[position])
         }
     }
