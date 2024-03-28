@@ -1,4 +1,4 @@
-package com.example.playlistmaker.recyclers.playlist
+package com.example.playlistmaker.playlist_recycler
 
 import android.icu.text.SimpleDateFormat
 import android.view.View
@@ -22,7 +22,7 @@ class PlaylistViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView){
 
         nameTrack.text = model.trackName
         artistTrack.text = model.artistName
-        timeTrack.text = model.getTrackTime()
+        timeTrack.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis.toLong())
 
         Glide.with(itemView)
             .load(model.artworkUrl100)
