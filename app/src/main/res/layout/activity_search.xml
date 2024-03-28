@@ -83,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="@dimen/uxl_size"
+        android:paddingTop="@dimen/dp108"
         android:visibility="gone">
 
         <TextView style="@style/PlaceholderText"
@@ -95,8 +95,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="100"
-            android:paddingTop="@dimen/l_size"
-            android:paddingBottom="@dimen/l_size"
+            android:paddingTop="@dimen/dp16"
+            android:paddingBottom="@dimen/dp16"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <Button style="@style/NoServiceButton"
