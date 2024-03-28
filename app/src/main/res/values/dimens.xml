@@ -22,6 +22,7 @@
     <dimen name="xl_size">24dp</dimen>
     <dimen name="xxl_size">28dp</dimen>
     <dimen name="ul_size">36dp</dimen>
+    <dimen name="uxl_size">108dp</dimen>
 
     <dimen name="us_text">8sp</dimen>
     <dimen name="s_text">12sp</dimen>
