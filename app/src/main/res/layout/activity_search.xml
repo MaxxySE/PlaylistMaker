@@ -78,32 +78,4 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/tack_history"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/dp108"
-        android:visibility="gone">
-
-        <TextView style="@style/PlaceholderText"
-            android:layout_weight="0.01"
-            android:text="@string/search_history_text"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/history_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="100"
-            android:paddingTop="@dimen/dp16"
-            android:paddingBottom="@dimen/dp16"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        <Button style="@style/NoServiceButton"
-            android:id="@+id/clear_track_history"
-            android:layout_weight="0.01"
-            android:text="@string/search_history_button" />
-
-    </LinearLayout>
-
 </FrameLayout>

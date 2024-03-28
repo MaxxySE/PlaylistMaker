@@ -7,5 +7,5 @@
     <color name="switch_toggler">#3772E7</color>
     <color name="switch_back">#7A9FBBF3</color>
     <color name="searchbar">#E6E8EB</color>
-    <color name="grey">#AEAFB4</color>
+    <color name="searchbar_text_light">#AEAFB4</color>
 </resources>
