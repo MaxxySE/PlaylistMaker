@@ -20,5 +20,15 @@
     <string name="track_time_ph" translatable="false">9:99</string>
     <string name="not_found_text" translatable="false">Ничего не нашлось</string>
     <string name="update" translatable="false">Обновить</string>
+    <string name="search_history_text" translatable="false">Вы искали</string>
+    <string name="search_history_button" translatable="false">Очистить историю</string>
+    <string name="player_name" translatable="false">Название трека</string>
+    <string name="player_artist" translatable="false">Имя артиста</string>
+    <string name="player_length" translatable="false">Длительность</string>
+    <string name="player_timer" translatable="false">9:99</string>
+    <string name="player_album" translatable="false">Альбом</string>
+    <string name="player_year" translatable="false">Год</string>
+    <string name="player_genre" translatable="false">Жанр</string>
+    <string name="player_country" translatable="false">Страна</string>
     <string name="no_service_text" translatable="false">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
 </resources>
