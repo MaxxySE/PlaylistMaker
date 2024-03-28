@@ -2,42 +2,23 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.Switch
 import android.widget.Toast
-import com.example.playlistmaker.additional.ConstData
-import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
-
-    private val constData = ConstData()
-
-    private lateinit var backBtn : View
-    private lateinit var shareBtn : View
-    private lateinit var supportBtn : View
-    private lateinit var agreementBtn : View
-    private lateinit var themeSwitcher : SwitchMaterial
-    private lateinit var playlistPrefs : SharedPreferences
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        playlistPrefs = getSharedPreferences(constData.getPlaylistPref(), MODE_PRIVATE)
-
-        backBtn = findViewById(R.id.back_btn)
-        shareBtn = findViewById(R.id.share_btn)
-        supportBtn = findViewById(R.id.support_btn)
-        agreementBtn = findViewById(R.id.user_agreement_btn)
-        themeSwitcher = findViewById(R.id.themeSwitch)
-
-        themeSwitcher.isChecked = playlistPrefs.getBoolean(constData.getThemeSwitchKey(), false)
+        val backBtn = findViewById<View>(R.id.back_btn)
+        val shareBtn = findViewById<View>(R.id.share_btn)
+        val supportBtn = findViewById<View>(R.id.support_btn)
+        val agreementBtn = findViewById<View>(R.id.user_agreement_btn)
 
         backBtn.setOnClickListener {
             this.finish()
@@ -63,14 +44,6 @@ class SettingsActivity : AppCompatActivity() {
             val webpage: Uri = Uri.parse(getString(R.string.user_agreement_link))
             val intent = Intent(Intent.ACTION_VIEW, webpage)
             startActivity(intent)
-        }
-
-        themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            playlistPrefs.edit()
-                .putBoolean(constData.getThemeSwitchKey(), checked)
-                .apply()
-
-            (applicationContext as App).switchTheme(checked)
         }
 
     }
