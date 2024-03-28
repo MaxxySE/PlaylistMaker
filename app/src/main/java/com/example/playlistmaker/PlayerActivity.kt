@@ -68,7 +68,7 @@ class PlayerActivity : AppCompatActivity() {
             albumFrame.visibility = View.VISIBLE
         } else {
             albumFrame.visibility = View.GONE
-        }h
+        }
 
         trackYear.text = track.getYear()
         trackGenre.text = track.primaryGenreName
