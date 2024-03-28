@@ -29,11 +29,12 @@
         <TextView style="@style/SettingsText"
             android:text="@string/dark_theme" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/themeSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            android:layout_gravity="end|center"
+            />
 
     </FrameLayout>
 

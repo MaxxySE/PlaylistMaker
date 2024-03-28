@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 
 import android.annotation.SuppressLint
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,10 +12,12 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.additional.ConstData
 import com.example.playlistmaker.additional.RetrofitInit
 import com.example.playlistmaker.apis.TrackApi
 import com.example.playlistmaker.entities.Track
-import com.example.playlistmaker.playlist_recycler.PlaylistAdapter
+import com.example.playlistmaker.recyclers.history.HistoryAdapter
+import com.example.playlistmaker.recyclers.playlist.PlaylistAdapter
 import com.example.playlistmaker.responses.TrackResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,8 +29,11 @@ class SearchActivity : AppCompatActivity() {
 
 
     private val baseUrl = "https://itunes.apple.com"
-    private val playlistAdapter = PlaylistAdapter()
+    private lateinit var playlistAdapter : PlaylistAdapter
+    private lateinit var historyAdapter : HistoryAdapter
     private val trackApi = RetrofitInit().getRetrofit(baseUrl).create(TrackApi::class.java)
+
+    private val constData = ConstData()
 
     private lateinit var searchbar : EditText
     private lateinit var clearBtn : View
@@ -38,17 +42,24 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var notFoundView : View
     private lateinit var noServiceView : View
     private lateinit var updateButton : Button
+    private lateinit var historyView : View
+    private lateinit var historyRecycler : RecyclerView
+    private lateinit var clearHistoryButton : Button
 
-    private val trackList = ArrayList<Track>()
+    private val trackList : MutableList<Track> = mutableListOf()
+    private var historyTrackList : MutableList<Track> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
         initViews()
-        clickListeners()
+        listeners()
 
-        setRecycler()
+        setSearchRecycler()
+        setHistoryRecycler()
+
+        searchbar.requestFocus()
 
         if (savedInstanceState != null) {
             inputedText = savedInstanceState.getString(INPUTED_TEXT, TEXT)
@@ -67,15 +78,27 @@ class SearchActivity : AppCompatActivity() {
         notFoundView = findViewById(R.id.not_found_view)
         noServiceView = findViewById(R.id.no_service_view)
         updateButton = findViewById(R.id.update_btn)
+        historyView = findViewById(R.id.tack_history)
+        clearHistoryButton = findViewById(R.id.clear_track_history)
+        historyRecycler = findViewById(R.id.history_recycler)
+
+        playlistAdapter = PlaylistAdapter(this)
+        historyAdapter = HistoryAdapter(this)
     }
 
-    private fun setRecycler(){
+    private fun setSearchRecycler(){
         playlistAdapter.trackList = trackList
         searchRecycler.adapter = playlistAdapter
     }
 
+    private fun setHistoryRecycler(){
+        historyTrackList = playlistAdapter.searchHistory.getHistoryTrackList()
+        historyAdapter.historyTrackList = historyTrackList
+        historyRecycler.adapter = historyAdapter
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    private fun clickListeners(){
+    private fun listeners(){
         clearBtn.setOnClickListener {
             searchbar.text.clear()
             trackList.clear()
@@ -83,6 +106,14 @@ class SearchActivity : AppCompatActivity() {
 
             notFoundView.visibility = View.GONE
             noServiceView.visibility = View.GONE
+
+            if(playlistAdapter.searchHistory.getHistoryTrackList().isNotEmpty()){
+                historyAdapter.historyTrackList = playlistAdapter.searchHistory.getHistoryTrackList()
+                historyAdapter.notifyDataSetChanged()
+                historyView.visibility = View.VISIBLE
+            } else {
+                historyView.visibility = View.GONE
+            }
 
             val view: View? = this.currentFocus
 
@@ -105,6 +136,29 @@ class SearchActivity : AppCompatActivity() {
         backBtn.setOnClickListener {
             this.finish()
         }
+
+        searchbar.setOnFocusChangeListener { _, hasFocus ->
+            //if trackList is not empty then -> else GONE
+            if(playlistAdapter.searchHistory.getHistoryTrackList().isNotEmpty()){
+                if (hasFocus && searchbar.text.isEmpty()) {
+                    historyAdapter.historyTrackList = playlistAdapter.searchHistory.getHistoryTrackList()
+                    historyAdapter.notifyDataSetChanged()
+                    historyView.visibility = View.VISIBLE
+                } else {
+                    historyView.visibility = View.GONE
+                }
+
+            } else {
+                historyView.visibility = View.GONE
+            }
+
+        }
+
+        clearHistoryButton.setOnClickListener{
+            historyView.visibility = View.GONE
+            playlistAdapter.searchHistory.clearHistory()
+        }
+
     }
 
     private fun search(){
@@ -124,11 +178,13 @@ class SearchActivity : AppCompatActivity() {
                             trackList.clear()
                             playlistAdapter.notifyDataSetChanged()
                             notFoundView.visibility = View.VISIBLE
+                            noServiceView.visibility = View.GONE
                         }
                     } else {
                         trackList.clear()
                         playlistAdapter.notifyDataSetChanged()
                         noServiceView.visibility = View.VISIBLE
+                        notFoundView.visibility = View.GONE
                     }
                 }
 
@@ -137,6 +193,7 @@ class SearchActivity : AppCompatActivity() {
                     trackList.clear()
                     playlistAdapter.notifyDataSetChanged()
                     noServiceView.visibility = View.VISIBLE
+                    notFoundView.visibility = View.GONE
                 }
             })
         }
@@ -149,9 +206,28 @@ class SearchActivity : AppCompatActivity() {
                 //empty
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 inputedText = s.toString()
                 clearBtn.visibility = clearButtonVisibility(s)
+                //if trackList is not null then -> else GONE
+                if(playlistAdapter.searchHistory.getHistoryTrackList().isNotEmpty()){
+                    if (searchbar.hasFocus() && searchbar.text.isEmpty()) {
+                        //как сделать чтобы notifyDataSetChanged() работало без этого
+                        historyAdapter.historyTrackList = playlistAdapter.searchHistory.getHistoryTrackList()
+                        historyAdapter.notifyDataSetChanged()
+                        historyView.visibility = View.VISIBLE
+                        trackList.clear()
+                        playlistAdapter.notifyDataSetChanged()
+                        notFoundView.visibility = View.GONE
+                        noServiceView.visibility = View.GONE
+                    } else {
+                        historyView.visibility = View.GONE
+                    }
+
+                } else {
+                    historyView.visibility = View.GONE
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
