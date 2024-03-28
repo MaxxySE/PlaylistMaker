@@ -46,7 +46,7 @@ class PlayerActivity : AppCompatActivity() {
         trackCountry = findViewById(R.id.track_country)
         albumFrame = findViewById(R.id.album_frame)
 
-        //не знаю может можно другим способом.
+        //не знаю может можно другим способом
         track = intent.getSerializableExtra("track") as Track
     }
 
