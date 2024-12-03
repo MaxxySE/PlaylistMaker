@@ -3,13 +3,17 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.additional.ConstData
@@ -27,13 +31,14 @@ class SearchActivity : AppCompatActivity() {
 
     private var inputedText = TEXT
 
-
     private val baseUrl = "https://itunes.apple.com"
     private lateinit var playlistAdapter : PlaylistAdapter
     private lateinit var historyAdapter : HistoryAdapter
     private val trackApi = RetrofitInit().getRetrofit(baseUrl).create(TrackApi::class.java)
 
     private val constData = ConstData()
+    private val searchRunnable = Runnable { search() }
+    private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var searchbar : EditText
     private lateinit var clearBtn : View
@@ -45,6 +50,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyView : View
     private lateinit var historyRecycler : RecyclerView
     private lateinit var clearHistoryButton : Button
+    private lateinit var progressBar : View
 
     private val trackList : MutableList<Track> = mutableListOf()
     private var historyTrackList : MutableList<Track> = mutableListOf()
@@ -81,6 +87,7 @@ class SearchActivity : AppCompatActivity() {
         historyView = findViewById(R.id.tack_history)
         clearHistoryButton = findViewById(R.id.clear_track_history)
         historyRecycler = findViewById(R.id.history_recycler)
+        progressBar = findViewById(R.id.progress_bar)
 
         playlistAdapter = PlaylistAdapter(this)
         historyAdapter = HistoryAdapter(this)
@@ -163,6 +170,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun search(){
         if (searchbar.text.isNotEmpty()){
+            progressBar.visibility = View.VISIBLE
+            noServiceView.visibility = View.GONE
+            notFoundView.visibility = View.GONE
+            searchRecycler.visibility = View.GONE
+            clearBtn.isEnabled = false
             trackApi.search(searchbar.text.toString()).enqueue(object : Callback<TrackResponse> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
@@ -173,18 +185,25 @@ class SearchActivity : AppCompatActivity() {
                             playlistAdapter.notifyDataSetChanged()
                             notFoundView.visibility = View.GONE
                             noServiceView.visibility = View.GONE
+                            progressBar.visibility = View.GONE
+                            searchRecycler.visibility = View.VISIBLE
+                            clearBtn.isEnabled = true
                         }
                         if (trackList.isEmpty()){
                             trackList.clear()
                             playlistAdapter.notifyDataSetChanged()
                             notFoundView.visibility = View.VISIBLE
                             noServiceView.visibility = View.GONE
+                            progressBar.visibility = View.GONE
+                            clearBtn.isEnabled = true
                         }
                     } else {
                         trackList.clear()
                         playlistAdapter.notifyDataSetChanged()
                         noServiceView.visibility = View.VISIBLE
                         notFoundView.visibility = View.GONE
+                        progressBar.visibility = View.GONE
+                        clearBtn.isEnabled = true
                     }
                 }
 
@@ -194,6 +213,8 @@ class SearchActivity : AppCompatActivity() {
                     playlistAdapter.notifyDataSetChanged()
                     noServiceView.visibility = View.VISIBLE
                     notFoundView.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    clearBtn.isEnabled = true
                 }
             })
         }
@@ -209,6 +230,7 @@ class SearchActivity : AppCompatActivity() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 inputedText = s.toString()
+                searchDebounce()
                 clearBtn.visibility = clearButtonVisibility(s)
                 //if trackList is not null then -> else GONE
                 if(playlistAdapter.searchHistory.getHistoryTrackList().isNotEmpty()){
@@ -261,9 +283,15 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
     companion object {
         private const val INPUTED_TEXT = "INPUTED_TEXT"
         private const val TEXT = ""
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
 }

@@ -86,6 +86,14 @@
             app:layout_constraintStart_toEndOf="@id/leftBorder"
             app:layout_constraintTop_toTopOf="@+id/add_playlist_btn" />
 
+        <ImageView style="@style/PlayerPauseBtn"
+            android:id="@+id/pause_btn"
+            app:layout_constraintBottom_toBottomOf="@+id/add_playlist_btn"
+            app:layout_constraintEnd_toStartOf="@id/rightBorder"
+            app:layout_constraintStart_toEndOf="@id/leftBorder"
+            app:layout_constraintTop_toTopOf="@+id/add_playlist_btn"
+            android:visibility="invisible"/>
+
         <ImageView style="@style/PlayerLikeBtn"
             android:id="@+id/like_btn"
             app:layout_constraintBottom_toBottomOf="@+id/add_playlist_btn"
