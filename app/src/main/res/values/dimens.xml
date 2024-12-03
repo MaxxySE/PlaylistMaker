@@ -15,20 +15,23 @@
     <dimen name="separate_dot">4dp</dimen>
     <dimen name="track_padding">36dp</dimen>
 
-    <dimen name="us_size">4dp</dimen>
-    <dimen name="s_size">8dp</dimen>
-    <dimen name="m_size">12dp</dimen>
-    <dimen name="l_size">16dp</dimen>
-    <dimen name="xl_size">24dp</dimen>
-    <dimen name="xxl_size">28dp</dimen>
-    <dimen name="ul_size">36dp</dimen>
+    <dimen name="dp4">4dp</dimen>
+    <dimen name="dp8">8dp</dimen>
+    <dimen name="dp12">12dp</dimen>
+    <dimen name="dp16">16dp</dimen>
+    <dimen name="dp24">24dp</dimen>
+    <dimen name="dp28">28dp</dimen>
+    <dimen name="dp36">36dp</dimen>
+    <dimen name="dp44">44dp</dimen>
+    <dimen name="dp52">52dp</dimen>
+    <dimen name="dp108">108dp</dimen>
 
-    <dimen name="us_text">8sp</dimen>
-    <dimen name="s_text">12sp</dimen>
-    <dimen name="m_text">16sp</dimen>
-    <dimen name="l_text">20sp</dimen>
-    <dimen name="xl_text">24sp</dimen>
-    <dimen name="xxl_text">28sp</dimen>
-    <dimen name="ul_text">36sp</dimen>
+    <dimen name="sp8">8sp</dimen>
+    <dimen name="sp12">12sp</dimen>
+    <dimen name="sp16">16sp</dimen>
+    <dimen name="sp20">20sp</dimen>
+    <dimen name="sp24">24sp</dimen>
+    <dimen name="sp28">28sp</dimen>
+    <dimen name="sp36">36sp</dimen>
 
 </resources>
