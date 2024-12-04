@@ -91,6 +91,12 @@
         <item name="android:src">@drawable/light_play_btn</item>
     </style>
 
+    <style name="PlayerPauseBtn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@drawable/light_pause_btn</item>
+    </style>
+
     <style name="PlayerTrackName">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
