@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -59,6 +60,8 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         }
 
         loadHistory()
+
+        requestFocusAndShowKeyboard()
     }
 
     override fun onDestroy() {
@@ -244,6 +247,12 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         super.onRestoreInstanceState(savedInstanceState)
         val inputedText = savedInstanceState.getString(INPUTED_TEXT, TEXT)
         searchBar.setText(inputedText)
+    }
+
+    private fun requestFocusAndShowKeyboard() {
+        searchBar.requestFocus()
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(searchBar, InputMethodManager.SHOW_IMPLICIT)
     }
 
     companion object {
