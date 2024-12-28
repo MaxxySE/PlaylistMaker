@@ -1,4 +1,4 @@
-package com.example.playlistmaker.recyclers.history
+package com.example.playlistmaker.ui.search.recyclers.history
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -9,24 +9,25 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.PlayerActivity
+import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.additional.ConstData
-import com.example.playlistmaker.additional.SearchHistory
-import com.example.playlistmaker.entities.Track
-import com.example.playlistmaker.recyclers.playlist.PlaylistViewHolder
+import com.example.playlistmaker.data.settings.ConstData
+import com.example.playlistmaker.data.local.SearchHistory
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.ui.search.recyclers.playlist.PlaylistViewHolder
 
-class HistoryAdapter(private val context : Context) : RecyclerView.Adapter<PlaylistViewHolder>() {
+
+class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<PlaylistViewHolder>() {
 
     private var isClickAllowed = true
-
     private val handler = Handler(Looper.getMainLooper())
 
-    var historyTrackList : MutableList<Track> = mutableListOf()
+    var historyTrackList: MutableList<Track> = mutableListOf()
     val searchHistory = SearchHistory(
         context.getSharedPreferences(
-            ConstData().getPlaylistPref(), Application.MODE_PRIVATE
-        ))
+            ConstData().getPlaylistPref(), Context.MODE_PRIVATE
+        )
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
@@ -41,7 +42,7 @@ class HistoryAdapter(private val context : Context) : RecyclerView.Adapter<Playl
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         holder.bind(historyTrackList[position])
         holder.itemView.setOnClickListener {
-            if(clickDebounce()) {
+            if (clickDebounce()) {
                 val playerIntent = Intent(context, PlayerActivity::class.java)
                 playerIntent.putExtra("track", historyTrackList[position])
                 context.startActivity(playerIntent)
@@ -52,7 +53,7 @@ class HistoryAdapter(private val context : Context) : RecyclerView.Adapter<Playl
         }
     }
 
-    private fun clickDebounce() : Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -64,5 +65,4 @@ class HistoryAdapter(private val context : Context) : RecyclerView.Adapter<Playl
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
-
 }

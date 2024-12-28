@@ -1,22 +1,19 @@
-package com.example.playlistmaker.recyclers.playlist
+package com.example.playlistmaker.ui.search.recyclers.playlist
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.LibraryActivity
-import com.example.playlistmaker.MainActivity
-import com.example.playlistmaker.PlayerActivity
+import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.additional.ConstData
-import com.example.playlistmaker.additional.SearchHistory
-import com.example.playlistmaker.entities.Track
+import com.example.playlistmaker.data.settings.ConstData
+import com.example.playlistmaker.data.local.SearchHistory
+import com.example.playlistmaker.domain.models.Track
 
 class PlaylistAdapter(private val context : Context) : RecyclerView.Adapter<PlaylistViewHolder>(){
 
@@ -26,7 +23,8 @@ class PlaylistAdapter(private val context : Context) : RecyclerView.Adapter<Play
 
     var trackList : MutableList<Track> = mutableListOf()
     val searchHistory = SearchHistory(
-        context.getSharedPreferences(ConstData().getPlaylistPref(), Application.MODE_PRIVATE
+        context.getSharedPreferences(
+            ConstData().getPlaylistPref(), Application.MODE_PRIVATE
     ))
 
 
@@ -37,6 +35,7 @@ class PlaylistAdapter(private val context : Context) : RecyclerView.Adapter<Play
 
     override fun getItemCount(): Int = trackList.size
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         holder.bind(trackList[position])
         holder.itemView.setOnClickListener {
@@ -45,6 +44,7 @@ class PlaylistAdapter(private val context : Context) : RecyclerView.Adapter<Play
                 playerIntent.putExtra("track", trackList[position])
                 context.startActivity(playerIntent)
                 searchHistory.saveTrackToList(trackList[position])
+                this.notifyDataSetChanged()
             }
         }
     }

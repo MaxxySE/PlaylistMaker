@@ -1,4 +1,4 @@
-package com.example.playlistmaker.entities
+package com.example.playlistmaker.domain.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -16,13 +16,18 @@ data class Track(
     val releaseDate: String,
     val primaryGenreName: String,
     val country: String,
-    val previewUrl: String? = null,
+    val previewUrl: String? = null
 ) : Parcelable {
-    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
 
-    fun getTrackTime(): String = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis.toLong())
+    fun getCoverArtwork(): String {
+        return artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+    }
+
+    fun getTrackTime(): String {
+        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis.toLong())
+    }
 
     fun getYear(): String {
-        return releaseDate.replaceAfter('-', "").replace("-", "")
+        return releaseDate.substring(0, 4)
     }
 }
