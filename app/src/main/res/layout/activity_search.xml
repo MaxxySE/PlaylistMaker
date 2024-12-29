@@ -37,9 +37,9 @@
                 android:drawableStart="@drawable/search"
                 android:hint="@string/search_title"
                 android:inputType="text"
+                android:focusableInTouchMode="true"
                 android:imeOptions="actionDone"
-                android:singleLine="true"
-                />
+                android:singleLine="true"/>
 
             <ImageView style="@style/EditTextRightBtn"
                 android:id="@+id/clear_btn"
@@ -90,7 +90,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tack_history"
+        android:id="@+id/track_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

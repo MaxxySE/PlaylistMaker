@@ -2,7 +2,7 @@ package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.additional.ConstData
+import com.example.playlistmaker.data.settings.ConstData
 
 
 class App : Application() {
@@ -12,6 +12,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Creator.init(this)
 
         val playlistPrefs = getSharedPreferences(constData.getPlaylistPref(), MODE_PRIVATE)
 
