@@ -13,7 +13,7 @@ class TrackInteractorImpl(
     override fun searchTracks(text: String, consumer: TrackInteractor.TrackConsumer) {
         executor.execute {
             try {
-                val tracks = repository.findTracks(text)
+                val tracks = repository.searchTracks(text)
                 if (tracks.isEmpty()) {
                     consumer.consume(emptyList())
                 } else {

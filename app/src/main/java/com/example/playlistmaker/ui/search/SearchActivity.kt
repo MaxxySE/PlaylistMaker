@@ -39,6 +39,10 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
 
     private lateinit var presenter: SearchContract.Presenter
 
+    private val historyInteractor by lazy {
+        Creator.provideHistoryInteractor()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -47,11 +51,8 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         presenter.attachView(this)
 
         initializeViews()
-
         setupAdapters()
-
         setupRecyclerViews()
-
         setupListeners()
 
         if (savedInstanceState != null) {
@@ -60,7 +61,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         }
 
         loadHistory()
-
         requestFocusAndShowKeyboard()
     }
 
@@ -82,8 +82,8 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         historyRecyclerView = findViewById(R.id.history_recycler)
         progressBar = findViewById(R.id.progress_bar)
 
-        playlistAdapter = PlaylistAdapter(this)
-        historyAdapter = HistoryAdapter(this)
+        playlistAdapter = PlaylistAdapter(this, historyInteractor)
+        historyAdapter = HistoryAdapter(this, historyInteractor)
     }
 
     private fun setupAdapters() {
@@ -119,7 +119,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
             finish()
         }
 
-        // Обработка фокуса на поисковой строке
         searchBar.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && searchBar.text.isEmpty() && historyAdapter.historyTrackList.isNotEmpty()) {
                 presenter.showHistory()
@@ -128,16 +127,14 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
             }
         }
 
-        // Кнопка очистки истории поиска
         clearHistoryButton.setOnClickListener {
+            historyInteractor.clearHistory()
             historyAdapter.historyTrackList.clear()
-            historyView.visibility = View.GONE
-            historyAdapter.searchHistory.clearHistory()
             historyAdapter.notifyDataSetChanged()
+            historyView.visibility = View.GONE
             Log.d("SearchActivity", "История очищена")
         }
 
-        // Добавление TextWatcher с делегированием в Presenter
         searchBar.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
@@ -155,7 +152,10 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun loadHistory() {
-        historyAdapter.historyTrackList = historyAdapter.searchHistory.getHistoryTrackList()
+        val tracksFromHistory = historyInteractor.getHistory()
+        historyAdapter.historyTrackList.clear()
+        historyAdapter.historyTrackList.addAll(tracksFromHistory)
+
         if (historyAdapter.historyTrackList.isNotEmpty()) {
             historyView.visibility = View.VISIBLE
             historyAdapter.notifyDataSetChanged()
@@ -165,8 +165,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
             Log.d("SearchActivity", "История треков пуста")
         }
     }
-
-    // Реализация методов SearchContract.View
 
     override fun showLoading() {
         progressBar.visibility = View.VISIBLE
@@ -186,6 +184,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         presenter.refreshCurrentSearch()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun showTracks(foundTracks: List<Track>) {
         playlistAdapter.trackList.clear()
         playlistAdapter.trackList.addAll(foundTracks)
@@ -226,8 +225,10 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
     }
 
     override fun showHistory() {
-        historyView.visibility = View.VISIBLE
-        searchRecyclerView.visibility = View.GONE
+        if (historyAdapter.historyTrackList.isNotEmpty()) {
+            historyView.visibility = View.VISIBLE
+            searchRecyclerView.visibility = View.GONE
+        }
     }
 
     override fun hideHistory() {

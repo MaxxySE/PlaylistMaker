@@ -37,6 +37,7 @@
                 android:drawableStart="@drawable/search"
                 android:hint="@string/search_title"
                 android:inputType="text"
+                android:focusableInTouchMode="true"
                 android:imeOptions="actionDone"
                 android:singleLine="true"/>
 

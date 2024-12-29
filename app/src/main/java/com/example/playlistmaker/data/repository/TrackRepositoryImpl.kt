@@ -1,5 +1,6 @@
-package com.example.playlistmaker.data
+package com.example.playlistmaker.data.repository
 
+import com.example.playlistmaker.data.NetworkClient
 import com.example.playlistmaker.data.dto.TrackRequest
 import com.example.playlistmaker.data.dto.TrackResponse
 import com.example.playlistmaker.domain.api.TrackRepository
@@ -9,7 +10,7 @@ class TrackRepositoryImpl(
     private val networkClient: NetworkClient
 ) : TrackRepository {
 
-    override fun findTracks(text: String): List<Track> {
+    override fun searchTracks(text: String): List<Track> {
         val response = networkClient.doRequest(TrackRequest(text))
 
         return if (response.resultCode == 200 && response is TrackResponse) {

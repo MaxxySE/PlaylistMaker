@@ -12,6 +12,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Creator.init(this)
 
         val playlistPrefs = getSharedPreferences(constData.getPlaylistPref(), MODE_PRIVATE)
 

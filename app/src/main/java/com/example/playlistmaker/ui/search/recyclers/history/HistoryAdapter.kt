@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.search.recyclers.history
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
@@ -9,25 +8,21 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.settings.ConstData
-import com.example.playlistmaker.data.local.SearchHistory
+import com.example.playlistmaker.domain.api.HistoryInteractor
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.search.recyclers.playlist.PlaylistViewHolder
 
-
-class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<PlaylistViewHolder>() {
+class HistoryAdapter(
+    private val context: Context,
+    private val historyInteractor: HistoryInteractor
+) : RecyclerView.Adapter<PlaylistViewHolder>() {
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
     var historyTrackList: MutableList<Track> = mutableListOf()
-    val searchHistory = SearchHistory(
-        context.getSharedPreferences(
-            ConstData().getPlaylistPref(), Context.MODE_PRIVATE
-        )
-    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
@@ -43,12 +38,17 @@ class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<Playli
         holder.bind(historyTrackList[position])
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
+                val track = historyTrackList[position]
+
                 val playerIntent = Intent(context, PlayerActivity::class.java)
-                playerIntent.putExtra("track", historyTrackList[position])
+                playerIntent.putExtra("track", track)
                 context.startActivity(playerIntent)
-                searchHistory.saveTrackToList(historyTrackList[position])
-                historyTrackList = searchHistory.getHistoryTrackList()
-                this.notifyDataSetChanged()
+
+                historyInteractor.saveTrack(track)
+
+                historyTrackList.clear()
+                historyTrackList.addAll(historyInteractor.getHistory())
+                notifyDataSetChanged()
             }
         }
     }
