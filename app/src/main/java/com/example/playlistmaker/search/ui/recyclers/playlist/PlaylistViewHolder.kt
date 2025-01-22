@@ -9,15 +9,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.sharing.domain.models.Track
 
-class PlaylistViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView){
+class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val imageTrack : ImageView = itemView.findViewById(R.id.track_image)
-    private val nameTrack : TextView = itemView.findViewById(R.id.track_name)
-    private val artistTrack : TextView = itemView.findViewById(R.id.track_artist)
-    private val timeTrack : TextView = itemView.findViewById(R.id.track_time)
+    private val imageTrack: ImageView = itemView.findViewById(R.id.track_image)
+    private val nameTrack: TextView = itemView.findViewById(R.id.track_name)
+    private val artistTrack: TextView = itemView.findViewById(R.id.track_artist)
+    private val timeTrack: TextView = itemView.findViewById(R.id.track_time)
 
-    fun bind(model : Track){
-
+    fun bind(model: Track) {
         nameTrack.text = model.trackName
         artistTrack.text = model.artistName
         timeTrack.text = model.getTrackTime()
@@ -28,7 +27,5 @@ class PlaylistViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView){
             .fitCenter()
             .transform(RoundedCorners(10))
             .into(imageTrack)
-
     }
-
 }

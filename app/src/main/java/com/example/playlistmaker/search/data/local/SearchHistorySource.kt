@@ -3,17 +3,18 @@ package com.example.playlistmaker.search.data.local
 import android.content.SharedPreferences
 import com.example.playlistmaker.search.data.dto.HistoryTrackDto
 import com.example.playlistmaker.sharing.data.settings.ConstData
-import com.example.playlistmaker.sharing.domain.models.Track
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class SearchHistorySource(
     private val sharedPreferences: SharedPreferences
 ) {
     private val constData = ConstData()
     private val searchKey = constData.getSearchHistoryKey()
+    private val gson = Gson()
 
     fun saveTrackList(historyList: List<HistoryTrackDto>) {
-        val json = Gson().toJson(historyList)
+        val json = gson.toJson(historyList)
         sharedPreferences.edit()
             .putString(searchKey, json)
             .apply()
@@ -21,7 +22,8 @@ class SearchHistorySource(
 
     fun readTrackList(): List<HistoryTrackDto> {
         val json = sharedPreferences.getString(searchKey, null) ?: return emptyList()
-        return Gson().fromJson(json, Array<HistoryTrackDto>::class.java).toList()
+        val type = object : TypeToken<List<HistoryTrackDto>>() {}.type
+        return gson.fromJson(json, type)
     }
 
     fun clear() {

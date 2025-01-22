@@ -1,23 +1,25 @@
 package com.example.playlistmaker.search.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.ui.recyclers.history.HistoryAdapter
 import com.example.playlistmaker.search.ui.recyclers.playlist.PlaylistAdapter
 import com.example.playlistmaker.search.ui.viewmodel.SearchState
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
-import com.example.playlistmaker.search.ui.viewmodel.SearchViewModelFactory
+import com.example.playlistmaker.sharing.data.dto.toDto
+import com.example.playlistmaker.sharing.domain.models.Track
 
 class SearchActivity : AppCompatActivity() {
 
@@ -27,10 +29,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyAdapter: HistoryAdapter
 
     private val viewModel: SearchViewModel by viewModels {
-        SearchViewModelFactory(application, Creator.provideTrackInteractor())
+        Creator.provideSearchViewModelFactory()
     }
-
-    private val historyInteractor by lazy { Creator.provideHistoryInteractor() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +52,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initializeAdapters() {
-        playlistAdapter = PlaylistAdapter(this, historyInteractor)
-        historyAdapter = HistoryAdapter(this, historyInteractor)
-        playlistAdapter.trackList = mutableListOf()
+        playlistAdapter = PlaylistAdapter(
+            onItemClick = { track -> navigateToPlayer(track) },
+            saveHistory = { track -> viewModel.saveTrackToHistory(track) }
+        )
+        historyAdapter = HistoryAdapter(
+            onItemClick = { track -> navigateToPlayer(track) },
+            saveHistory = { track -> viewModel.saveTrackToHistory(track) }
+        )
     }
-
     private fun setupRecyclerViews() {
         binding.searchRecycler.adapter = playlistAdapter
         binding.historyRecycler.adapter = historyAdapter
@@ -102,11 +106,9 @@ class SearchActivity : AppCompatActivity() {
         }
 
         binding.clearTrackHistory.setOnClickListener {
-            historyInteractor.clearHistory()
-            historyAdapter.historyTrackList.clear()
-            historyAdapter.notifyDataSetChanged()
+            viewModel.clearHistory()
+            historyAdapter.updateHistory(emptyList())
             binding.trackHistory.visibility = View.GONE
-            Log.d("SearchActivity", "История очищена")
         }
     }
 
@@ -132,9 +134,7 @@ class SearchActivity : AppCompatActivity() {
                     binding.notFoundView.visibility = View.GONE
                     binding.noServiceView.visibility = View.GONE
                     binding.searchRecycler.visibility = View.VISIBLE
-                    playlistAdapter.trackList.clear()
-                    playlistAdapter.trackList.addAll(state.tracks)
-                    playlistAdapter.notifyDataSetChanged()
+                    playlistAdapter.updateTracks(state.tracks)
                     hideHistoryView()
                 }
                 is SearchState.Error -> {
@@ -143,7 +143,6 @@ class SearchActivity : AppCompatActivity() {
                     binding.searchRecycler.visibility = View.GONE
                     binding.notFoundView.visibility = View.GONE
                     hideHistoryView()
-                    Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
                 }
                 is SearchState.ShowHistory -> {
                     binding.progressBar.visibility = View.GONE
@@ -155,19 +154,14 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    @Suppress("NotifyDataSetChanged")
     private fun loadHistory() {
-        val tracksFromHistory = historyInteractor.getHistory()
-        historyAdapter.historyTrackList.clear()
-        historyAdapter.historyTrackList.addAll(tracksFromHistory)
+        val tracksFromHistory = viewModel.getHistory()
+        historyAdapter.updateHistory(tracksFromHistory)
 
-        if (historyAdapter.historyTrackList.isNotEmpty()) {
+        if (tracksFromHistory.isNotEmpty()) {
             binding.trackHistory.visibility = View.VISIBLE
-            historyAdapter.notifyDataSetChanged()
-            Log.d("SearchActivity", "Загружено ${historyAdapter.historyTrackList.size} треков из истории")
         } else {
             binding.trackHistory.visibility = View.GONE
-            Log.d("SearchActivity", "История треков пуста")
         }
     }
 
@@ -208,6 +202,13 @@ class SearchActivity : AppCompatActivity() {
     private fun hideKeyboard() {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
+
+    private fun navigateToPlayer(track: Track) {
+        val intent = Intent(this, PlayerActivity::class.java).apply {
+            putExtra("track", track.toDto())
+        }
+        startActivity(intent)
     }
 
     companion object {

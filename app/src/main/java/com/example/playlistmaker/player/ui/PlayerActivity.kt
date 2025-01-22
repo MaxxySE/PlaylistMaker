@@ -1,66 +1,59 @@
 package com.example.playlistmaker.player.ui
 
-import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.util.Log
 import android.view.View
-import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.player.ui.viewmodel.PlayerState
+import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
+import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModelFactory
+import com.example.playlistmaker.sharing.data.dto.TrackDto
+import com.example.playlistmaker.sharing.data.dto.toDomain
+import com.example.playlistmaker.sharing.data.dto.toDto
 import com.example.playlistmaker.sharing.domain.models.Track
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: Track
-    private lateinit var previewUrl: String
 
-    private var playerState = STATE_DEFAULT
-    private var mediaPlayer = MediaPlayer()
-    private val handler = Handler(Looper.getMainLooper())
-    private val updateRunnable = object : Runnable {
-        override fun run() {
-            if (playerState == STATE_PLAYING) {
-                val currentTime = SimpleDateFormat("mm:ss", Locale.getDefault())
-                    .format(mediaPlayer.currentPosition.toLong())
-                binding.playerTimer.text = currentTime
-                handler.postDelayed(this, TIMER_DELAY)
-            }
-        }
+    private val viewModel: PlayerViewModel by viewModels {
+        Creator.providePlayerViewModelFactory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
-
         binding = ActivityPlayerBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         initElements()
-        setPlayer()
-        listeners()
+        setPlayerDetails()
+        setupListeners()
+        observeViewModel()
 
         binding.playBtn.isEnabled = false
 
-        if (track.previewUrl?.isNotEmpty() == true) {
-            preparePlayer()
-        } else {
-            Toast.makeText(this, "Song Preview Unavailable", Toast.LENGTH_SHORT).show()
+        if (!track.previewUrl.isNullOrEmpty()) {
+            viewModel.prepare(track.previewUrl!!)
         }
     }
 
     private fun initElements() {
-        track = intent.getParcelableExtra("track") ?: throw IllegalArgumentException("Track data missing")
+        val trackDto = intent.getParcelableExtra<TrackDto>("track")
+            ?: throw IllegalArgumentException("Track data missing")
+        track = trackDto.toDomain()
     }
 
-    private fun setPlayer() {
+    private fun setPlayerDetails() {
         Glide.with(this)
             .load(track.getCoverArtwork())
             .placeholder(R.drawable.album_placeholder)
@@ -78,82 +71,90 @@ class PlayerActivity : AppCompatActivity() {
         binding.trackYear.text = track.getYear()
         binding.trackGenre.text = track.primaryGenreName
         binding.trackCountry.text = track.country
-
-        previewUrl = track.previewUrl.toString()
     }
 
-    private fun listeners() {
-        binding.backBtn.setOnClickListener {
-            this.finish()
-        }
+    private fun setupListeners() {
+        binding.backBtn.setOnClickListener { finish() }
 
         binding.playBtn.setOnClickListener {
-            startPlayer()
+            viewModel.play()
         }
 
         binding.pauseBtn.setOnClickListener {
-            pausePlayer()
+            viewModel.pause()
         }
     }
 
-    private fun preparePlayer() {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            binding.playBtn.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            stopTimer()
-            binding.playerTimer.text = "00:00"
-            binding.pauseBtn.visibility = View.INVISIBLE
-            binding.playBtn.visibility = View.VISIBLE
-            playerState = STATE_PREPARED
-        }
+    private fun observeViewModel() {
+        viewModel.playerState.observe(this, Observer { state ->
+            when (state) {
+                is PlayerState.Idle -> {
+                    binding.playBtn.isEnabled = true
+                    binding.pauseBtn.visibility = View.INVISIBLE
+                    binding.playBtn.visibility = View.VISIBLE
+                    binding.playerTimer.text = "00:00"
+                }
+                is PlayerState.Prepared -> {
+                    binding.playBtn.isEnabled = true
+                }
+                is PlayerState.Playing -> {
+                    binding.playBtn.visibility = View.INVISIBLE
+                    binding.pauseBtn.visibility = View.VISIBLE
+                    startTimer()
+                }
+                is PlayerState.Paused -> {
+                    binding.pauseBtn.visibility = View.INVISIBLE
+                    binding.playBtn.visibility = View.VISIBLE
+                    stopTimer()
+                }
+                is PlayerState.Completed -> {
+                    binding.playerTimer.text = "00:00"
+                    binding.pauseBtn.visibility = View.INVISIBLE
+                    binding.playBtn.visibility = View.VISIBLE
+                    stopTimer()
+                }
+                is PlayerState.Error -> {
+                    Log.d("PSError", state.message)
+                }
+            }
+        })
     }
 
-    private fun startPlayer() {
-        mediaPlayer.start()
-        binding.playBtn.visibility = View.INVISIBLE
-        binding.pauseBtn.visibility = View.VISIBLE
-        playerState = STATE_PLAYING
-        startTimer()
-    }
-
-    private fun pausePlayer() {
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.pause()
-            stopTimer()
-            binding.pauseBtn.visibility = View.INVISIBLE
-            binding.playBtn.visibility = View.VISIBLE
-            playerState = STATE_PAUSED
+    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val updateRunnable = object : Runnable {
+        override fun run() {
+            val currentTime = viewModel.getCurrentPosition()
+            binding.playerTimer.text = formatTime(currentTime)
+            handler.postDelayed(this, TIMER_DELAY)
         }
-    }
-
-    private fun stopTimer() {
-        handler.removeCallbacks(updateRunnable)
     }
 
     private fun startTimer() {
         handler.post(updateRunnable)
     }
 
+    private fun stopTimer() {
+        handler.removeCallbacks(updateRunnable)
+    }
+
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        viewModel.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        stopTimer()
-        mediaPlayer.release()
+        viewModel.stop()
+    }
+
+    @SuppressLint("DefaultLocale")
+    private fun formatTime(millis: Long): String {
+        val minutes = (millis / 1000) / 60
+        val seconds = (millis / 1000) % 60
+        return String.format("%02d:%02d", minutes, seconds)
     }
 
     companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
         private const val TIMER_DELAY = 250L
     }
 }

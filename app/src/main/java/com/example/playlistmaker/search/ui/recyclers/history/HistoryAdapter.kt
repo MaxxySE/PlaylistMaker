@@ -1,26 +1,16 @@
 package com.example.playlistmaker.search.ui.recyclers.history
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.domain.api.HistoryInteractor
 import com.example.playlistmaker.sharing.domain.models.Track
-import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.ui.recyclers.playlist.PlaylistViewHolder
 
 class HistoryAdapter(
-    private val context: Context,
-    private val historyInteractor: HistoryInteractor
+    private val onItemClick: (Track) -> Unit,
+    private val saveHistory: (Track) -> Unit
 ) : RecyclerView.Adapter<PlaylistViewHolder>() {
-
-    private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
 
     var historyTrackList: MutableList<Track> = mutableListOf()
 
@@ -29,40 +19,27 @@ class HistoryAdapter(
         return PlaylistViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return historyTrackList.size
-    }
+    override fun getItemCount(): Int = historyTrackList.size
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         holder.bind(historyTrackList[position])
         holder.itemView.setOnClickListener {
-            if (clickDebounce()) {
-                val track = historyTrackList[position]
-
-                val playerIntent = Intent(context, PlayerActivity::class.java)
-                playerIntent.putExtra("track", track)
-                context.startActivity(playerIntent)
-
-                historyInteractor.saveTrack(track)
-
-                historyTrackList.clear()
-                historyTrackList.addAll(historyInteractor.getHistory())
-                notifyDataSetChanged()
-            }
+            val track = historyTrackList[position]
+            moveToFirst(track)
+            saveHistory(track)
+            onItemClick(track)
         }
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
+    private fun moveToFirst(track: Track) {
+        historyTrackList.remove(track)
+        historyTrackList.add(0, track)
+        notifyDataSetChanged()
     }
 
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+    fun updateHistory(newHistory: List<Track>) {
+        historyTrackList.clear()
+        historyTrackList.addAll(newHistory)
+        notifyDataSetChanged()
     }
 }

@@ -5,6 +5,7 @@ import com.example.playlistmaker.sharing.data.dto.TrackRequest
 import com.example.playlistmaker.sharing.data.dto.TrackResponse
 import com.example.playlistmaker.sharing.domain.api.TrackRepository
 import com.example.playlistmaker.sharing.domain.models.Track
+import com.example.playlistmaker.sharing.data.dto.toDomain
 
 class TrackRepositoryImpl(
     private val networkClient: NetworkClient
@@ -17,21 +18,7 @@ class TrackRepositoryImpl(
             if (response.results.isEmpty()) {
                 emptyList()
             } else {
-                // TrackDto -> Track
-                response.results.map {
-                    Track(
-                        trackId = it.trackId,
-                        trackName = it.trackName,
-                        artistName = it.artistName,
-                        trackTimeMillis = it.trackTimeMillis,
-                        artworkUrl100 = it.artworkUrl100,
-                        collectionName = it.collectionName,
-                        releaseDate = it.releaseDate,
-                        primaryGenreName = it.primaryGenreName,
-                        country = it.country,
-                        previewUrl = it.previewUrl
-                    )
-                }
+                response.results.map { it.toDomain() }
             }
         } else {
             throw Exception("No network or server error. Code: ${response.resultCode}")

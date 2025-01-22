@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.search.domain.api.HistoryInteractor
 import com.example.playlistmaker.sharing.domain.api.TrackInteractor
 import com.example.playlistmaker.sharing.domain.models.Track
 import kotlinx.coroutines.Job
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(
     application: Application,
-    private val trackInteractor: TrackInteractor
+    private val trackInteractor: TrackInteractor,
+    private val historyInteractor: HistoryInteractor
 ) : AndroidViewModel(application) {
 
     private val _state = MutableLiveData<SearchState>(SearchState.Idle)
@@ -90,5 +92,18 @@ class SearchViewModel(
 
     fun hideHistory() {
         _state.value = SearchState.Idle
+    }
+
+    fun getHistory(): List<Track> {
+        return historyInteractor.getHistory()
+    }
+
+    fun clearHistory() {
+        historyInteractor.clearHistory()
+        _state.value = SearchState.ShowHistory
+    }
+
+    fun saveTrackToHistory(track: Track) {
+        historyInteractor.saveTrack(track)
     }
 }

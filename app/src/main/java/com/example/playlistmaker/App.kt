@@ -3,27 +3,22 @@ package com.example.playlistmaker
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.sharing.data.settings.ConstData
-
+import com.example.playlistmaker.settings.domain.api.SettingsInteractor
 
 class App : Application() {
 
-    private val constData = ConstData()
-    var darkTheme = false
+    private lateinit var settingsInteractor: SettingsInteractor
 
     override fun onCreate() {
         super.onCreate()
         Creator.init(this)
+        settingsInteractor = Creator.provideSettingsInteractor()
 
-        val playlistPrefs = getSharedPreferences(constData.getPlaylistPref(), MODE_PRIVATE)
-
-        darkTheme = playlistPrefs.getBoolean(constData.getThemeSwitchKey(), false)
-
+        val darkTheme = settingsInteractor.getThemeState()
         switchTheme(darkTheme)
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
-        darkTheme = darkThemeEnabled
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) {
                 AppCompatDelegate.MODE_NIGHT_YES
@@ -32,5 +27,4 @@ class App : Application() {
             }
         )
     }
-
 }
