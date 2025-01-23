@@ -33,7 +33,7 @@ class SearchViewModel(
         searchJob?.cancel()
 
         if (query.isBlank()) {
-            _state.value = SearchState.ShowHistory
+            showHistory()
             return
         }
 
@@ -47,7 +47,7 @@ class SearchViewModel(
     fun onClearClicked() {
         currentQuery = ""
         searchJob?.cancel()
-        _state.value = SearchState.ShowHistory
+        showHistory()
     }
 
     fun onSearchAction() {
@@ -59,13 +59,13 @@ class SearchViewModel(
         if (currentQuery.isNotEmpty()) {
             performSearch(currentQuery.trim())
         } else {
-            _state.value = SearchState.ShowHistory
+            showHistory()
         }
     }
 
     private fun performSearch(query: String) {
         if (query.isEmpty()) {
-            _state.value = SearchState.ShowHistory
+            showHistory()
             return
         }
 
@@ -87,20 +87,17 @@ class SearchViewModel(
     }
 
     fun showHistory() {
-        _state.value = SearchState.ShowHistory
+        val history = historyInteractor.getHistory()
+        _state.value = SearchState.ShowHistory(history)
     }
 
     fun hideHistory() {
         _state.value = SearchState.Idle
     }
 
-    fun getHistory(): List<Track> {
-        return historyInteractor.getHistory()
-    }
-
     fun clearHistory() {
         historyInteractor.clearHistory()
-        _state.value = SearchState.ShowHistory
+        showHistory()
     }
 
     fun saveTrackToHistory(track: Track) {

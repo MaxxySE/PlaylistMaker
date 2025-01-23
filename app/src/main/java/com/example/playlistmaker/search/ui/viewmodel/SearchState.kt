@@ -8,5 +8,5 @@ sealed class SearchState {
     object NotFound : SearchState()
     data class Content(val tracks: List<Track>) : SearchState()
     data class Error(val message: String) : SearchState()
-    object ShowHistory : SearchState()
+    data class ShowHistory(val history: List<Track>) : SearchState()
 }

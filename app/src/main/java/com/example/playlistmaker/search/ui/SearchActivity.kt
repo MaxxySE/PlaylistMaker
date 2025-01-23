@@ -47,7 +47,8 @@ class SearchActivity : AppCompatActivity() {
             binding.searchEdittext.setText(inputedText)
         }
 
-        loadHistory()
+        viewModel.showHistory()
+
         requestFocusAndShowKeyboard()
     }
 
@@ -148,22 +149,18 @@ class SearchActivity : AppCompatActivity() {
                     binding.progressBar.visibility = View.GONE
                     hideOtherViews()
                     binding.trackHistory.visibility = View.VISIBLE
-                    loadHistory()
+                    historyAdapter.updateHistory(state.history)
+
+                    if (state.history.isNotEmpty()) {
+                        binding.trackHistory.visibility = View.VISIBLE
+                    } else {
+                        binding.trackHistory.visibility = View.GONE
+                    }
                 }
             }
         })
     }
 
-    private fun loadHistory() {
-        val tracksFromHistory = viewModel.getHistory()
-        historyAdapter.updateHistory(tracksFromHistory)
-
-        if (tracksFromHistory.isNotEmpty()) {
-            binding.trackHistory.visibility = View.VISIBLE
-        } else {
-            binding.trackHistory.visibility = View.GONE
-        }
-    }
 
     private fun hideOtherViews() {
         binding.noServiceView.visibility = View.GONE
@@ -178,7 +175,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        loadHistory()
+        viewModel.showHistory()
         viewModel.refreshCurrentSearch()
     }
 

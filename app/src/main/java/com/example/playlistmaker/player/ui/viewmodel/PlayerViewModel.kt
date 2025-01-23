@@ -35,8 +35,9 @@ class PlayerViewModel(
         interactor.stop()
     }
 
-    fun getCurrentPosition(): Long {
-        return interactor.getCurrentPosition()
+    fun updateCurrentPosition() {
+        val currentPosition = interactor.getCurrentPosition()
+        _playerState.postValue(PlayerState.PositionUpdate(currentPosition))
     }
 
     override fun onCleared() {

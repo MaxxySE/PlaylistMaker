@@ -116,18 +116,14 @@ class PlayerActivity : AppCompatActivity() {
                 is PlayerState.Error -> {
                     Log.d("PSError", state.message)
                 }
+                is PlayerState.PositionUpdate -> {
+                    updateTimer(state.position)
+                }
             }
         })
     }
 
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
-    private val updateRunnable = object : Runnable {
-        override fun run() {
-            val currentTime = viewModel.getCurrentPosition()
-            binding.playerTimer.text = formatTime(currentTime)
-            handler.postDelayed(this, TIMER_DELAY)
-        }
-    }
 
     private fun startTimer() {
         handler.post(updateRunnable)
@@ -135,6 +131,17 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun stopTimer() {
         handler.removeCallbacks(updateRunnable)
+    }
+
+    private val updateRunnable = object : Runnable {
+        override fun run() {
+            viewModel.updateCurrentPosition()
+            handler.postDelayed(this, TIMER_DELAY)
+        }
+    }
+
+    private fun updateTimer(position: Long) {
+        binding.playerTimer.text = formatTime(position)
     }
 
     override fun onPause() {
