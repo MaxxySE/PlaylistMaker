@@ -9,4 +9,9 @@
     <color name="switch_back">#7A9FBBF3</color>
     <color name="searchbar">#E6E8EB</color>
     <color name="grey">#AEAFB4</color>
+    <color name="light_thumb_color">#AEAFB4</color>
+    <color name="light_track_color">#E6E8EB</color>
+    <color name="dark_thumb_color">#3772E7</color>
+    <color name="dark_track_color">#9FBBF3</color>
+    <color name="cursor_color">#3772E7</color>
 </resources>

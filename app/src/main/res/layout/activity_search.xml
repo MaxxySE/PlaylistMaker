@@ -20,7 +20,7 @@
 
             <ImageView style="@style/BackButton"
                 android:id="@+id/back_btn"
-                app:srcCompat="@drawable/back" />
+                android:src="@drawable/back" />
 
             <TextView style="@style/Title"
                 android:text="@string/search_title" />
@@ -39,7 +39,8 @@
                 android:inputType="text"
                 android:focusableInTouchMode="true"
                 android:imeOptions="actionDone"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:textCursorDrawable="@drawable/custom_cursor"/>
 
             <ImageView style="@style/EditTextRightBtn"
                 android:id="@+id/clear_btn"
