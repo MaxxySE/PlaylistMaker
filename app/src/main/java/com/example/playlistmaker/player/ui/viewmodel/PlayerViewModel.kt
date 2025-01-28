@@ -3,7 +3,6 @@ package com.example.playlistmaker.player.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.player.ui.viewmodel.PlayerState
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 
 class PlayerViewModel(

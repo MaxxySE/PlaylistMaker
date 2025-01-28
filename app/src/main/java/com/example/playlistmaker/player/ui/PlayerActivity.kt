@@ -4,21 +4,17 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.ui.viewmodel.PlayerState
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
-import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModelFactory
 import com.example.playlistmaker.sharing.data.dto.TrackDto
 import com.example.playlistmaker.sharing.data.dto.toDomain
-import com.example.playlistmaker.sharing.data.dto.toDto
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.example.playlistmaker.sharing.domain.models.Track
 
 class PlayerActivity : AppCompatActivity() {
@@ -26,9 +22,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: Track
 
-    private val viewModel: PlayerViewModel by viewModels {
-        Creator.providePlayerViewModelFactory()
-    }
+    private val viewModel: PlayerViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
