@@ -7,11 +7,8 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.ui.recyclers.history.HistoryAdapter
@@ -20,6 +17,8 @@ import com.example.playlistmaker.search.ui.viewmodel.SearchState
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.example.playlistmaker.sharing.data.dto.toDto
 import com.example.playlistmaker.sharing.domain.models.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class SearchActivity : AppCompatActivity() {
 
@@ -28,9 +27,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var playlistAdapter: PlaylistAdapter
     private lateinit var historyAdapter: HistoryAdapter
 
-    private val viewModel: SearchViewModel by viewModels {
-        Creator.provideSearchViewModelFactory()
-    }
+    private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

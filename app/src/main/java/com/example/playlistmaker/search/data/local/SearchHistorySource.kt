@@ -7,11 +7,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class SearchHistorySource(
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val gson: Gson
 ) {
-    private val constData = ConstData()
-    private val searchKey = constData.getSearchHistoryKey()
-    private val gson = Gson()
+    private val searchKey = ConstData.getSearchHistoryKey()
 
     fun saveTrackList(historyList: List<HistoryTrackDto>) {
         val json = gson.toJson(historyList)
