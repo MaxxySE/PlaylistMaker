@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".library.ui.LibraryActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/library"
-        android:layout_gravity="center"
-        android:textColor="@color/black"
-        android:textSize="20sp"/>
+        android:orientation="horizontal"
+        android:padding="@dimen/layout_padding">
 
-</FrameLayout>
+        <ImageView
+            style="@style/BackButton"
+            android:id="@+id/back_btn"
+            android:src="@drawable/back" />
+
+        <TextView
+            style="@style/Title"
+            android:text="@string/library" />
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        style="@style/TabLayout"
+        android:id="@+id/tab_layout"
+        android:layout_below="@id/header"
+    />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_below="@id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</RelativeLayout>

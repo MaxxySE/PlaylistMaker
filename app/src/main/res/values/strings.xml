@@ -31,4 +31,14 @@
     <string name="player_genre" translatable="false">Жанр</string>
     <string name="player_country" translatable="false">Страна</string>
     <string name="no_service_text" translatable="false">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+
+
+    <string name="new_playlist_btn" translatable="false">Новый плейлист</string>
+    <string name="library_playlist_error" translatable="false">Вы не создали\nни одного плейлиста</string>
+    <string name="library_favorites_error" translatable="false">Ваша медиатека пуста</string>
+    <string name="favorites_tab_title" translatable="false">Избранные треки</string>
+    <string name="playlists_tab_title" translatable="false">Плейлисты</string>
+    <string name="library_error_description" translatable="false">Error Image Description</string>
+
+
 </resources>
