@@ -25,6 +25,19 @@
         <item name="android:src">@drawable/playlist_dark</item>
     </style>
 
+    <style name="TabLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabIndicatorFullWidth">true</item>
+        <item name="android:radius">0dp</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="tabIndicator">@drawable/tab_indicator_night</item>
+        <item name="tabTextColor">@color/white</item>
+    </style>
+
     <style name="Switcher">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
