@@ -40,5 +40,9 @@
     <string name="playlists_tab_title" translatable="false">Плейлисты</string>
     <string name="library_error_description" translatable="false">Error Image Description</string>
 
+    <string name="search_nav_text" translatable="false">Поиск</string>
+    <string name="library_nav_text" translatable="false">Медиатека</string>
+    <string name="settings_nav_text" translatable="false">Настройки</string>
+
 
 </resources>

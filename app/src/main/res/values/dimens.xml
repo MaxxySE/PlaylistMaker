@@ -33,5 +33,6 @@
     <dimen name="sp24">24sp</dimen>
     <dimen name="sp28">28sp</dimen>
     <dimen name="sp36">36sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

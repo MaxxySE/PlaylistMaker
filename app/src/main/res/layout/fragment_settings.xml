@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/layout_padding"
+    tools:context=".settings.ui.SettingsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="36dp">
+
+        <TextView
+            style="@style/Title"
+            android:text="@string/settings" />
+
+    </LinearLayout>
+
+    <FrameLayout style="@style/SettingsFrame">
+
+        <TextView
+            style="@style/SettingsText"
+            android:text="@string/dark_theme" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            style="@style/Switcher"
+            android:id="@+id/themeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center" />
+
+    </FrameLayout>
+
+    <FrameLayout style="@style/SettingsFrame"
+        android:id="@+id/share_btn">
+
+        <TextView
+            style="@style/SettingsText"
+            android:text="@string/share_app" />
+
+        <ImageView
+            style="@style/SettingsIcon"
+            app:srcCompat="@drawable/share" />
+
+    </FrameLayout>
+
+    <FrameLayout style="@style/SettingsFrame"
+        android:id="@+id/support_btn">
+
+        <TextView
+            style="@style/SettingsText"
+            android:text="@string/support" />
+
+        <ImageView
+            style="@style/SettingsIcon"
+            app:srcCompat="@drawable/support" />
+
+    </FrameLayout>
+
+    <FrameLayout style="@style/SettingsFrame"
+        android:id="@+id/user_agreement_btn">
+
+        <TextView
+            style="@style/SettingsText"
+            android:text="@string/user_agreement" />
+
+        <ImageView
+            style="@style/SettingsIcon"
+            app:srcCompat="@drawable/user_agree" />
+
+    </FrameLayout>
+
+</LinearLayout>
