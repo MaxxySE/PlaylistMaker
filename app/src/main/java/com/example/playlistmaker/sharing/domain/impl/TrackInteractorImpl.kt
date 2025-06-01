@@ -1,26 +1,26 @@
 package com.example.playlistmaker.sharing.domain.impl
 
+import com.example.playlistmaker.sharing.domain.api.Resource
 import com.example.playlistmaker.sharing.domain.api.TrackInteractor
 import com.example.playlistmaker.sharing.domain.api.TrackRepository
-import java.util.concurrent.Executors
+import com.example.playlistmaker.sharing.domain.models.Track
+
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class TrackInteractorImpl(
     private val repository: TrackRepository
 ) : TrackInteractor {
 
-    private val executor = Executors.newCachedThreadPool()
-
-    override fun searchTracks(text: String, consumer: TrackInteractor.TrackConsumer) {
-        executor.execute {
-            try {
-                val tracks = repository.searchTracks(text)
-                if (tracks.isEmpty()) {
-                    consumer.consume(emptyList())
-                } else {
-                    consumer.consume(tracks)
+    override fun searchTracks(text: String): Flow<Pair<List<Track>?, String?>> {
+        return repository.searchTracks(text).map { result ->
+            when (result) {
+                is Resource.Success -> {
+                    Pair(result.data, null)
                 }
-            } catch (e: Exception) {
-                consumer.onError(e.message ?: "Unknown error")
+                is Resource.Error -> {
+                    Pair(null, result.message)
+                }
             }
         }
     }

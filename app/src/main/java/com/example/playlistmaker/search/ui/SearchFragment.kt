@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
@@ -35,9 +35,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val viewModel: SearchViewModel by viewModel()
 
+    private var isClickAllowed = true
+
     companion object {
         private const val INPUTED_TEXT = "INPUTED_TEXT"
         private const val TEXT = ""
+        private const val CLICK_DEBOUNCE_DELAY_MS = 1000L
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,14 +63,20 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun initializeAdapters() {
         playlistAdapter = PlaylistAdapter(
-            onItemClick = { track -> navigateToPlayer(track) },
+            onItemClick = { track ->
+                // Передаем действие
+                clickDebounce { navigateToPlayer(track) }
+            },
             saveHistory = { track -> viewModel.saveTrackToHistory(track) }
         )
         historyAdapter = HistoryAdapter(
-            onItemClick = { track -> navigateToPlayer(track) },
+            onItemClick = { track ->
+                clickDebounce { navigateToPlayer(track) }
+            },
             saveHistory = { track -> viewModel.saveTrackToHistory(track) }
         )
     }
+
 
     private fun setupRecyclerViews() {
         binding.searchRecycler.apply {
@@ -218,6 +227,18 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             putExtra("track", track.toDto())
         }
         startActivity(intent)
+    }
+
+    private fun clickDebounce(action: () -> Unit) {
+        if (isClickAllowed) {
+            isClickAllowed = false
+            action()
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MS)
+                isClickAllowed = true
+            }
+        }
     }
 
     override fun onDestroyView() {

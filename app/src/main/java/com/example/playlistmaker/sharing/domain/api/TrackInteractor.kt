@@ -2,11 +2,8 @@ package com.example.playlistmaker.sharing.domain.api
 
 import com.example.playlistmaker.sharing.domain.models.Track
 
-interface TrackInteractor {
-    fun searchTracks(text: String, consumer: TrackConsumer)
+import kotlinx.coroutines.flow.Flow
 
-    interface TrackConsumer {
-        fun consume(foundTracks: List<Track>)
-        fun onError(errorMessage: String)
-    }
+interface TrackInteractor {
+    fun searchTracks(text: String): Flow<Pair<List<Track>?, String?>>
 }

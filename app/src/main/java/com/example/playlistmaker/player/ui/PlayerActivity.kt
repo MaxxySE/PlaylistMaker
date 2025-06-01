@@ -81,58 +81,46 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.playerState.observe(this, Observer { state ->
+            // Упрощенный when, он только меняет UI
             when (state) {
                 is PlayerState.Idle -> {
-                    binding.playBtn.isEnabled = true
+                    // Это состояние может не приходить, но на всякий случай
+                    binding.playBtn.isEnabled = false // Плеер еще не готов
                     binding.pauseBtn.visibility = View.INVISIBLE
                     binding.playBtn.visibility = View.VISIBLE
                     binding.playerTimer.text = "00:00"
                 }
                 is PlayerState.Prepared -> {
                     binding.playBtn.isEnabled = true
+                    binding.pauseBtn.visibility = View.INVISIBLE
+                    binding.playBtn.visibility = View.VISIBLE
+                    binding.playerTimer.text = "00:00"
                 }
                 is PlayerState.Playing -> {
                     binding.playBtn.visibility = View.INVISIBLE
                     binding.pauseBtn.visibility = View.VISIBLE
-                    startTimer()
                 }
                 is PlayerState.Paused -> {
                     binding.pauseBtn.visibility = View.INVISIBLE
                     binding.playBtn.visibility = View.VISIBLE
-                    stopTimer()
                 }
                 is PlayerState.Completed -> {
                     binding.playerTimer.text = "00:00"
                     binding.pauseBtn.visibility = View.INVISIBLE
                     binding.playBtn.visibility = View.VISIBLE
-                    stopTimer()
                 }
                 is PlayerState.Error -> {
+                    // Обработка ошибки
                     Log.d("PSError", state.message)
                 }
                 is PlayerState.PositionUpdate -> {
+                    // Просто обновляем таймер
                     updateTimer(state.position)
                 }
             }
         })
     }
 
-    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
-
-    private fun startTimer() {
-        handler.post(updateRunnable)
-    }
-
-    private fun stopTimer() {
-        handler.removeCallbacks(updateRunnable)
-    }
-
-    private val updateRunnable = object : Runnable {
-        override fun run() {
-            viewModel.updateCurrentPosition()
-            handler.postDelayed(this, TIMER_DELAY)
-        }
-    }
 
     private fun updateTimer(position: Long) {
         binding.playerTimer.text = formatTime(position)
@@ -145,7 +133,6 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.stop()
     }
 
     @SuppressLint("DefaultLocale")

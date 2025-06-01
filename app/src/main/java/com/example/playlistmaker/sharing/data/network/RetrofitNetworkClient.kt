@@ -4,25 +4,26 @@ import com.example.playlistmaker.sharing.data.NetworkClient
 import com.example.playlistmaker.sharing.data.dto.ApiResponse
 import com.example.playlistmaker.sharing.data.dto.TrackRequest
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RetrofitNetworkClient(
     private val trackApi: TrackApi
 ) : NetworkClient {
 
-    override fun doRequest(dto: Any): ApiResponse {
-        return if (dto is TrackRequest) {
+    override suspend fun doRequest(dto: Any): ApiResponse {
+
+        if (dto !is TrackRequest) {
+            return ApiResponse().apply { resultCode = 400 }
+        }
+
+        return withContext(Dispatchers.IO) {
             try {
-                val response = trackApi.search(dto.text).execute()
-                val body = response.body() ?: ApiResponse()
-                body.resultCode = response.code()
-                body
-            } catch (e: Exception) {
-                ApiResponse().apply {
-                    resultCode = 500
-                }
+                val response = trackApi.search(dto.text)
+                response.apply { resultCode = 200 }
+            } catch (e: Throwable) {
+                ApiResponse().apply { resultCode = 500 } // Ошибка сервера/запроса
             }
-        } else {
-            ApiResponse().apply { resultCode = 400 }
         }
     }
 }

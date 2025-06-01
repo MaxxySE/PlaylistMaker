@@ -37,7 +37,8 @@ class SearchViewModel(
             return
         }
 
-        _state.value = SearchState.Loading
+        _state.postValue(SearchState.Loading)
+
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
             performSearch(query.trim())
@@ -64,26 +65,33 @@ class SearchViewModel(
     }
 
     private fun performSearch(query: String) {
-        if (query.isEmpty()) {
-            showHistory()
-            return
+
+        viewModelScope.launch {
+            trackInteractor
+                .searchTracks(query)
+                .collect { pair ->
+                    processResult(pair.first, pair.second)
+                }
+        }
+    }
+
+    private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+        val tracks = mutableListOf<Track>()
+        if (foundTracks != null) {
+            tracks.addAll(foundTracks)
         }
 
-        _state.value = SearchState.Loading
-
-        trackInteractor.searchTracks(query, object : TrackInteractor.TrackConsumer {
-            override fun consume(foundTracks: List<Track>) {
-                if (foundTracks.isEmpty()) {
-                    _state.postValue(SearchState.NotFound)
-                } else {
-                    _state.postValue(SearchState.Content(foundTracks))
-                }
-            }
-
-            override fun onError(errorMessage: String) {
+        when {
+            errorMessage != null -> {
                 _state.postValue(SearchState.Error(errorMessage))
             }
-        })
+            tracks.isEmpty() -> {
+                _state.postValue(SearchState.NotFound)
+            }
+            else -> {
+                _state.postValue(SearchState.Content(tracks))
+            }
+        }
     }
 
     fun showHistory() {
