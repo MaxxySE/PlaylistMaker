@@ -21,7 +21,6 @@ import com.example.playlistmaker.search.ui.recyclers.history.HistoryAdapter
 import com.example.playlistmaker.search.ui.recyclers.playlist.PlaylistAdapter
 import com.example.playlistmaker.search.ui.viewmodel.SearchState
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
-import com.example.playlistmaker.sharing.data.dto.toDto
 import com.example.playlistmaker.sharing.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -224,7 +223,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun navigateToPlayer(track: Track) {
         val intent = Intent(requireContext(), PlayerActivity::class.java).apply {
-            putExtra("track", track.toDto())
+            putExtra("track", track)
         }
         startActivity(intent)
     }

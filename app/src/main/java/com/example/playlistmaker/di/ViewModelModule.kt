@@ -24,15 +24,19 @@ val viewModelModule = module {
         )
     }
 
-    viewModel {
-        PlayerViewModel(interactor = get())
+    viewModel { params ->
+        PlayerViewModel(
+            interactor = get(),
+            favoritesInteractor = get(),
+            track = params.get()
+        )
     }
 
     viewModel {
         PlaylistViewModel()
     }
     viewModel {
-        FavoritesViewModel()
+        FavoritesViewModel(favoritesInteractor = get())
     }
     viewModel {
         LibraryViewModel()
