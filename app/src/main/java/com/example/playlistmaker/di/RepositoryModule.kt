@@ -9,11 +9,14 @@ import com.example.playlistmaker.settings.data.repository.SettingsRepositoryImpl
 import com.example.playlistmaker.player.domain.api.PlayerRepository
 import com.example.playlistmaker.player.data.repository.PlayerRepositoryImpl
 import org.koin.dsl.module
+import com.example.playlistmaker.library.fragments.favorites.data.repository.FavoriteTracksRepositoryImpl
+import com.example.playlistmaker.library.fragments.favorites.domain.api.FavoriteTracksRepository
+
 
 val repositoryModule = module {
 
     single<TrackRepository> {
-        TrackRepositoryImpl(networkClient = get())
+        TrackRepositoryImpl(networkClient = get(), favoriteTracksRepository = get())
     }
 
     single<HistoryRepository> {
@@ -26,5 +29,9 @@ val repositoryModule = module {
 
     single<PlayerRepository> {
         PlayerRepositoryImpl()
+    }
+
+    single<FavoriteTracksRepository> {
+        FavoriteTracksRepositoryImpl(appDatabase = get(), converter = get())
     }
 }

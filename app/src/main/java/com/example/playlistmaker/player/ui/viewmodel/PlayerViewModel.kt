@@ -4,49 +4,77 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.library.fragments.favorites.domain.api.FavoriteTracksInteractor
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
+import com.example.playlistmaker.sharing.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
-    private val interactor: PlayerInteractor
+    private val interactor: PlayerInteractor,
+    private val favoritesInteractor: FavoriteTracksInteractor,
+    private val track: Track
+
 ) : ViewModel() {
 
     private val _playerState = MutableLiveData<PlayerState>()
     val playerState: LiveData<PlayerState> get() = _playerState
 
-    // Job для контроля корутины таймера
+    private val _isFavorite = MutableLiveData<Boolean>()
+    val isFavorite: LiveData<Boolean> get() = _isFavorite
+
     private var timerJob: Job? = null
 
     init {
+        _isFavorite.value = track.isFavorite
+
+        viewModelScope.launch {
+            val actualIsFavorite = favoritesInteractor.isTrackFavorite(track.trackId)
+            track.isFavorite = actualIsFavorite
+            _isFavorite.postValue(actualIsFavorite)
+        }
+
+
         interactor.setPlayerStateListener { state ->
             _playerState.postValue(state)
-            // Управляем таймером в зависимости от состояния плеера
             when (state) {
                 is PlayerState.Playing -> startPlayerTimer()
                 is PlayerState.Paused, is PlayerState.Prepared, is PlayerState.Completed -> timerJob?.cancel()
-                else -> { /* Ничего не делаем для других состояний */ }
+                else -> { }
             }
+        }
+
+        if (!track.previewUrl.isNullOrEmpty()) {
+            prepare(track.previewUrl!!)
+        } else {
+            _playerState.postValue(PlayerState.Idle)
+        }
+    }
+
+    fun onFavoriteClicked() {
+        viewModelScope.launch {
+            val currentFavoriteStatus = track.isFavorite
+            if (currentFavoriteStatus) {
+                favoritesInteractor.deleteTrack(track)
+            } else {
+                favoritesInteractor.addTrack(track)
+            }
+            track.isFavorite = !currentFavoriteStatus
+            _isFavorite.postValue(track.isFavorite)
         }
     }
 
     private fun startPlayerTimer() {
-        // Отменяем предыдущую Job, если она была
         timerJob?.cancel()
-        // Запускаем новую корутину в viewModelScope
         timerJob = viewModelScope.launch {
             while (true) {
-                // В задании указана задержка 300 мс
                 delay(TIMER_DELAY_MS)
                 val currentPosition = interactor.getCurrentPosition()
                 _playerState.postValue(PlayerState.PositionUpdate(currentPosition))
             }
         }
     }
-
-    // Этот метод больше не нужен, т.к. ViewModel сама управляет таймером
-    // fun updateCurrentPosition() { ... }
 
     fun prepare(url: String) {
         interactor.prepare(url)
@@ -60,14 +88,10 @@ class PlayerViewModel(
         interactor.pause()
     }
 
-    // stop() не нужен, так как onCleared() уже вызывается жизненным циклом ViewModel
-    // и в нем мы останавливаем плеер и отменяем корутины
-    // fun stop() { ... }
-
     override fun onCleared() {
         super.onCleared()
-        timerJob?.cancel() // Отменяем корутину
-        interactor.stop() // Останавливаем и освобождаем плеер
+        timerJob?.cancel()
+        interactor.stop()
     }
 
     companion object {
