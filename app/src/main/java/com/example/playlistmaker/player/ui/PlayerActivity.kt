@@ -12,39 +12,42 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.ui.viewmodel.PlayerState
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
-import com.example.playlistmaker.sharing.data.dto.TrackDto
-import com.example.playlistmaker.sharing.data.dto.toDomain
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.example.playlistmaker.sharing.domain.models.Track
+import org.koin.core.parameter.parametersOf
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: Track
 
-    private val viewModel: PlayerViewModel by viewModel()
+    private val viewModel: PlayerViewModel by viewModel {
+        parametersOf(track)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        getTrack()
+
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initElements()
         setPlayerDetails()
         setupListeners()
         observeViewModel()
 
         binding.playBtn.isEnabled = false
-
-        if (!track.previewUrl.isNullOrEmpty()) {
-            viewModel.prepare(track.previewUrl!!)
-        }
     }
 
-    private fun initElements() {
-        val trackDto = intent.getParcelableExtra<TrackDto>("track")
-            ?: throw IllegalArgumentException("Track data missing")
-        track = trackDto.toDomain()
+    private fun getTrack() {
+        track = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("track", Track::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra("track")
+        } ?: throw IllegalArgumentException("Track data missing")
+
     }
 
     private fun setPlayerDetails() {
@@ -77,15 +80,17 @@ class PlayerActivity : AppCompatActivity() {
         binding.pauseBtn.setOnClickListener {
             viewModel.pause()
         }
+
+        binding.likeBtn.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
     }
 
     private fun observeViewModel() {
         viewModel.playerState.observe(this, Observer { state ->
-            // Упрощенный when, он только меняет UI
             when (state) {
                 is PlayerState.Idle -> {
-                    // Это состояние может не приходить, но на всякий случай
-                    binding.playBtn.isEnabled = false // Плеер еще не готов
+                    binding.playBtn.isEnabled = false
                     binding.pauseBtn.visibility = View.INVISIBLE
                     binding.playBtn.visibility = View.VISIBLE
                     binding.playerTimer.text = "00:00"
@@ -110,15 +115,18 @@ class PlayerActivity : AppCompatActivity() {
                     binding.playBtn.visibility = View.VISIBLE
                 }
                 is PlayerState.Error -> {
-                    // Обработка ошибки
                     Log.d("PSError", state.message)
                 }
                 is PlayerState.PositionUpdate -> {
-                    // Просто обновляем таймер
                     updateTimer(state.position)
                 }
             }
         })
+
+        viewModel.isFavorite.observe(this) { isFavorite ->
+            binding.likeBtn.isSelected = isFavorite
+        }
+
     }
 
 
@@ -142,7 +150,4 @@ class PlayerActivity : AppCompatActivity() {
         return String.format("%02d:%02d", minutes, seconds)
     }
 
-    companion object {
-        private const val TIMER_DELAY = 250L
-    }
 }

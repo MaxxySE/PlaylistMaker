@@ -16,7 +16,6 @@
             style="@style/NoServiceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp24"
             android:text="@string/new_playlist_btn"/>
 
         <ImageView

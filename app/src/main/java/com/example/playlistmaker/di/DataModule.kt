@@ -12,6 +12,10 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import androidx.room.Room
+import com.example.playlistmaker.library.fragments.favorites.data.db.AppDatabase
+import com.example.playlistmaker.library.fragments.favorites.data.db.converter.FavoritesTrackConverter
+
 
 val dataModule = module {
 
@@ -45,4 +49,8 @@ val dataModule = module {
             gson = get()
         )
     }
+
+    single { Room.databaseBuilder(androidContext(), AppDatabase::class.java, "playlist_maker.db").build() }
+
+    factory { FavoritesTrackConverter() }
 }
