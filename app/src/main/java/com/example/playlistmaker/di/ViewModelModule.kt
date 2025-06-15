@@ -1,6 +1,7 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.library.fragments.favorites.ui.viewmodel.FavoritesViewModel
+import com.example.playlistmaker.library.fragments.playlist.fragments.creation.viewmodels.CreationViewModel
 import com.example.playlistmaker.library.fragments.playlist.ui.viewmodel.PlaylistViewModel
 import com.example.playlistmaker.library.ui.viewmodel.LibraryViewModel
 import com.example.playlistmaker.settings.ui.viewmodel.SettingsViewModel
@@ -28,17 +29,23 @@ val viewModelModule = module {
         PlayerViewModel(
             interactor = get(),
             favoritesInteractor = get(),
+            playlistInteractor = get(),
             track = params.get()
         )
     }
 
+
     viewModel {
-        PlaylistViewModel()
+        PlaylistViewModel(playlistInteractor = get())
     }
     viewModel {
         FavoritesViewModel(favoritesInteractor = get())
     }
     viewModel {
         LibraryViewModel()
+    }
+
+    viewModel {
+        CreationViewModel(playlistInteractor = get())
     }
 }

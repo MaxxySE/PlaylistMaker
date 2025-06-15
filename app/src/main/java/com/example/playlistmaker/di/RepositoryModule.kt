@@ -1,5 +1,7 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.library.fragments.playlist.data.repository.PlaylistRepositoryImpl
+import com.example.playlistmaker.library.fragments.playlist.domain.api.PlaylistRepository
 import com.example.playlistmaker.sharing.domain.api.TrackRepository
 import com.example.playlistmaker.sharing.data.repository.TrackRepositoryImpl
 import com.example.playlistmaker.search.domain.api.HistoryRepository
@@ -33,5 +35,14 @@ val repositoryModule = module {
 
     single<FavoriteTracksRepository> {
         FavoriteTracksRepositoryImpl(appDatabase = get(), converter = get())
+    }
+
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(
+            appDatabase = get(),
+            imageStorageManager = get(),
+            gson = get(),
+            playlistTrackDao = get()
+        )
     }
 }

@@ -43,6 +43,13 @@
     <string name="search_nav_text" translatable="false">Поиск</string>
     <string name="library_nav_text" translatable="false">Медиатека</string>
     <string name="settings_nav_text" translatable="false">Настройки</string>
+    <string name="playlist_nav_text" translatable="false">Новый плейлист</string>
 
+    <plurals name="track_count_plurals" translatable="false">
+        <item quantity="one">%d трек</item>
+        <item quantity="few">%d трека</item>
+        <item quantity="many">%d треков</item>
+        <item quantity="other">%d трека</item>
+    </plurals>
 
 </resources>

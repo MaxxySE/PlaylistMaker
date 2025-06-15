@@ -1,6 +1,6 @@
     package com.example.playlistmaker.library.fragments.favorites.data.repository
 
-    import com.example.playlistmaker.library.fragments.favorites.data.db.AppDatabase
+    import com.example.playlistmaker.AppDatabase
     import com.example.playlistmaker.library.fragments.favorites.data.db.converter.FavoritesTrackConverter
     import com.example.playlistmaker.library.fragments.favorites.domain.api.FavoriteTracksRepository
     import com.example.playlistmaker.sharing.domain.models.Track

@@ -27,6 +27,9 @@ class GeneralActivity : AppCompatActivity() {
                 R.id.playerActivity -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
+                R.id.creationFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
                 else -> {
                     binding.bottomNavigationView.visibility = View.VISIBLE
                 }
