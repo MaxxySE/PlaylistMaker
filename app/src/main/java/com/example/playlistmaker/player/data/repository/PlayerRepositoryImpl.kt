@@ -1,8 +1,8 @@
 package com.example.playlistmaker.player.data.repository
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.player.ui.viewmodel.PlayerState
 import com.example.playlistmaker.player.domain.api.PlayerRepository
+import com.example.playlistmaker.player.ui.viewmodel.PlayerState
 
 class PlayerRepositoryImpl : PlayerRepository {
 
@@ -11,8 +11,11 @@ class PlayerRepositoryImpl : PlayerRepository {
 
     override fun prepare(url: String) {
         releasePlayer()
+
         mediaPlayer = MediaPlayer().apply {
             setDataSource(url)
+            prepareAsync()
+
             setOnPreparedListener {
                 listener?.invoke(PlayerState.Prepared)
             }
@@ -23,7 +26,6 @@ class PlayerRepositoryImpl : PlayerRepository {
                 listener?.invoke(PlayerState.Error("Playback error"))
                 true
             }
-            prepareAsync()
         }
     }
 
@@ -33,22 +35,18 @@ class PlayerRepositoryImpl : PlayerRepository {
     }
 
     override fun pause() {
-        mediaPlayer?.pause()
-        listener?.invoke(PlayerState.Paused)
+        if (mediaPlayer?.isPlaying == true) {
+            mediaPlayer?.pause()
+            listener?.invoke(PlayerState.Paused)
+        }
     }
 
     override fun stop() {
-        mediaPlayer?.stop()
         releasePlayer()
-        listener?.invoke(PlayerState.Idle)
     }
 
     override fun getCurrentState(): PlayerState {
-        return when {
-            mediaPlayer == null -> PlayerState.Idle
-            mediaPlayer!!.isPlaying -> PlayerState.Playing
-            else -> PlayerState.Paused
-        }
+        TODO("Not yet implemented")
     }
 
     override fun setPlayerStateListener(listener: (PlayerState) -> Unit) {

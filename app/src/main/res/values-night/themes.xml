@@ -4,5 +4,7 @@
         <item name="colorPrimary">@color/black</item>
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="bottomSheetBackgroundColor">@color/black</item>
+        <item name="materialAlertDialogTheme">@style/App.MaterialAlertDialog</item>
     </style>
 </resources>

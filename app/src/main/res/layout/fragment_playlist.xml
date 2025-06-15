@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".library.fragments.playlist.ui.PlaylistFragment">
+    tools:context=".library.fragments.playlist.ui.PlaylistFragment"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/new_playlist_button"
+        style="@style/NoServiceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_playlist_btn"/>
 
     <LinearLayout
+        android:id="@+id/placeholder_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/new_playlist_button"
-            style="@style/NoServiceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/new_playlist_btn"/>
+        android:visibility="gone"
+        >
 
         <ImageView
             style="@style/NotFoundImage"
@@ -33,4 +36,12 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlists_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="24dp"
+        tools:listitem="@layout/playlist_grid_item"
+        tools:itemCount="4"/>
+
+</LinearLayout>
