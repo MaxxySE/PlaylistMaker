@@ -13,7 +13,8 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import androidx.room.Room
-import com.example.playlistmaker.library.fragments.favorites.data.db.AppDatabase
+import com.example.playlistmaker.AppDatabase
+import com.example.playlistmaker.library.fragments.playlist.data.local.ImageStorageManager
 import com.example.playlistmaker.library.fragments.favorites.data.db.converter.FavoritesTrackConverter
 
 
@@ -50,7 +51,17 @@ val dataModule = module {
         )
     }
 
-    single { Room.databaseBuilder(androidContext(), AppDatabase::class.java, "playlist_maker.db").build() }
+    single { Room.databaseBuilder(androidContext(),
+        AppDatabase::class.java,
+        "playlist_maker.db")
+        .fallbackToDestructiveMigration()
+        .build() }
 
     factory { FavoritesTrackConverter() }
+
+    single { get<AppDatabase>().playlistDao() }
+
+    single { ImageStorageManager(androidContext()) }
+
+    single { get<AppDatabase>().playlistTrackDao() }
 }

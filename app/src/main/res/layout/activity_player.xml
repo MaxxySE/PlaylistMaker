@@ -1,196 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".player.ui.PlayerActivity">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        style="@style/Background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        tools:context=".player.ui.PlayerActivity">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/leftBorder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/dp24" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/leftBorder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/dp24" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/rightBorder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="@dimen/dp24" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rightBorder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/dp24" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/topBorder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="@dimen/dp24" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topBorder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="@dimen/dp24" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/bottomBorder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_end="@dimen/dp24" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/bottomBorder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="@dimen/dp24" />
 
-        <ImageView style="@style/PlayerBackBtn"
-            android:id="@+id/back_btn"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toBottomOf="@id/topBorder" />
+            <ImageView style="@style/PlayerBackBtn"
+                android:id="@+id/back_btn"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintTop_toBottomOf="@id/topBorder" />
 
-        <ImageView
-            android:id="@+id/player_cover"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/album_placeholder"
-            android:scaleType="fitXY"
-            app:layout_constraintDimensionRatio="h,1:1"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintTop_toBottomOf="@id/back_btn"
-            android:layout_marginTop="@dimen/dp28"/>
+            <ImageView
+                android:id="@+id/player_cover"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/album_placeholder"
+                android:scaleType="fitXY"
+                app:layout_constraintDimensionRatio="h,1:1"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintEnd_toStartOf="@id/rightBorder"
+                app:layout_constraintTop_toBottomOf="@id/back_btn"
+                android:layout_marginTop="@dimen/dp28"/>
+
+            <TextView
+                android:id="@+id/player_name"
+                style="@style/PlayerTrackName"
+                android:layout_width="0dp"
+                android:text="@string/player_name"
+                app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintTop_toBottomOf="@id/player_cover" />
+
+            <TextView
+                android:id="@+id/player_artist"
+                style="@style/PlayerTrackArtist"
+                android:layout_width="0dp"
+                android:text="@string/player_artist"
+                app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintTop_toBottomOf="@id/player_name" />
+
+            <ImageView style="@style/PlayerPlaylistBtn"
+                android:id="@+id/add_playlist_btn"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintTop_toBottomOf="@id/player_artist"
+                android:layout_marginTop="@dimen/dp52"/>
+
+            <ImageView style="@style/PlayerPlayBtn"
+                android:id="@+id/play_btn"
+                app:layout_constraintBottom_toBottomOf="@+id/add_playlist_btn"
+                app:layout_constraintEnd_toStartOf="@id/rightBorder"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintTop_toTopOf="@+id/add_playlist_btn" />
+
+            <ImageView style="@style/PlayerPauseBtn"
+                android:id="@+id/pause_btn"
+                app:layout_constraintBottom_toBottomOf="@+id/add_playlist_btn"
+                app:layout_constraintEnd_toStartOf="@id/rightBorder"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintTop_toTopOf="@+id/add_playlist_btn"
+                android:visibility="invisible"/>
+
+            <ImageView style="@style/PlayerLikeBtn"
+                android:id="@+id/like_btn"
+                app:layout_constraintBottom_toBottomOf="@+id/add_playlist_btn"
+                app:layout_constraintEnd_toStartOf="@id/rightBorder"
+                app:layout_constraintTop_toTopOf="@+id/add_playlist_btn" />
+
+            <TextView style="@style/PlayerTrackTimer"
+                android:id="@+id/player_timer"
+                android:text="@string/player_timer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/play_btn" />
+
+            <FrameLayout
+                android:id="@+id/length_frame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintEnd_toStartOf="@id/rightBorder"
+                app:layout_constraintTop_toBottomOf="@id/player_timer">
+
+                <TextView style="@style/PlayerLeftText"
+                    android:text="@string/player_length" />
+
+                <TextView style="@style/PlayerRightText"
+                    android:id="@+id/track_length"
+                    android:text="@string/player_timer" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/album_frame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintEnd_toStartOf="@id/rightBorder"
+                app:layout_constraintTop_toBottomOf="@id/length_frame">
+
+                <TextView style="@style/PlayerLeftText"
+                    android:text="@string/player_album" />
+
+                <TextView style="@style/PlayerRightText"
+                    android:id="@+id/track_album"
+                    android:maxLength="30"
+                    android:text="@string/player_album" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/year_frame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintEnd_toStartOf="@id/rightBorder"
+                app:layout_constraintTop_toBottomOf="@id/album_frame">
+
+                <TextView style="@style/PlayerLeftText"
+                    android:text="@string/player_year" />
+
+                <TextView style="@style/PlayerRightText"
+                    android:id="@+id/track_year"
+                    android:text="@string/player_year" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/genre_frame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintEnd_toStartOf="@id/rightBorder"
+                app:layout_constraintTop_toBottomOf="@id/year_frame">
+
+                <TextView style="@style/PlayerLeftText"
+                    android:text="@string/player_genre" />
+
+                <TextView style="@style/PlayerRightText"
+                    android:id="@+id/track_genre"
+                    android:text="@string/player_genre" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/country_frame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintEnd_toStartOf="@id/rightBorder"
+                app:layout_constraintTop_toBottomOf="@id/genre_frame"
+                android:paddingBottom="@dimen/dp24">
+
+                <TextView style="@style/PlayerLeftText"
+                    android:text="@string/player_country" />
+
+                <TextView style="@style/PlayerRightText"
+                    android:id="@+id/track_country"
+                    android:text="@string/player_country" />
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/playlists_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_background"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bottom_sheet_handle"/>
 
         <TextView
-            android:id="@+id/player_name"
-            style="@style/PlayerTrackName"
-            android:layout_width="0dp"
-            android:text="@string/player_name"
-            app:layout_constraintEnd_toStartOf="@+id/rightBorder"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toBottomOf="@id/player_cover" />
-
-        <TextView
-            android:id="@+id/player_artist"
-            style="@style/PlayerTrackArtist"
-            android:layout_width="0dp"
-            android:text="@string/player_artist"
-            app:layout_constraintEnd_toStartOf="@+id/rightBorder"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toBottomOf="@id/player_name" />
-
-        <ImageView style="@style/PlayerPlaylistBtn"
-            android:id="@+id/add_playlist_btn"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toBottomOf="@id/player_artist"
-            android:layout_marginTop="@dimen/dp52"/>
-
-        <ImageView style="@style/PlayerPlayBtn"
-            android:id="@+id/play_btn"
-            app:layout_constraintBottom_toBottomOf="@+id/add_playlist_btn"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toTopOf="@+id/add_playlist_btn" />
-
-        <ImageView style="@style/PlayerPauseBtn"
-            android:id="@+id/pause_btn"
-            app:layout_constraintBottom_toBottomOf="@+id/add_playlist_btn"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toTopOf="@+id/add_playlist_btn"
-            android:visibility="invisible"/>
-
-        <ImageView style="@style/PlayerLikeBtn"
-            android:id="@+id/like_btn"
-            app:layout_constraintBottom_toBottomOf="@+id/add_playlist_btn"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintTop_toTopOf="@+id/add_playlist_btn" />
-
-        <TextView style="@style/PlayerTrackTimer"
-            android:id="@+id/player_timer"
-            android:text="@string/player_timer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/play_btn" />
-
-        <FrameLayout
-            android:id="@+id/length_frame"
-            android:layout_width="0dp"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintTop_toBottomOf="@id/player_timer">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="@dimen/dp16"
+            android:fontFamily="@font/ys_display_medium"
+            android:text="Добавить в плейлист"
+            android:textSize="19sp" />
 
-            <TextView style="@style/PlayerLeftText"
-                android:text="@string/player_length" />
-
-            <TextView style="@style/PlayerRightText"
-                android:id="@+id/track_length"
-                android:text="@string/player_timer" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/album_frame"
-            android:layout_width="0dp"
+        <Button
+            android:id="@+id/new_playlist_button"
+            style="@style/NoServiceButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintTop_toBottomOf="@id/length_frame">
+            android:text="@string/new_playlist_btn"/>
 
-            <TextView style="@style/PlayerLeftText"
-                android:text="@string/player_album" />
-
-            <TextView style="@style/PlayerRightText"
-                android:id="@+id/track_album"
-                android:maxLength="30"
-                android:text="@string/player_album" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/year_frame"
-            android:layout_width="0dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlists_bs_recycler_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintTop_toBottomOf="@id/album_frame">
+            android:layout_marginTop="16dp"
+            tools:listitem="@layout/playlist_item_small"
+            tools:itemCount="2"/>
 
-            <TextView style="@style/PlayerLeftText"
-                android:text="@string/player_year" />
+    </LinearLayout>
 
-            <TextView style="@style/PlayerRightText"
-                android:id="@+id/track_year"
-                android:text="@string/player_year" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/genre_frame"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintTop_toBottomOf="@id/year_frame">
-
-            <TextView style="@style/PlayerLeftText"
-                android:text="@string/player_genre" />
-
-            <TextView style="@style/PlayerRightText"
-                android:id="@+id/track_genre"
-                android:text="@string/player_genre" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/country_frame"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
-            app:layout_constraintTop_toBottomOf="@id/genre_frame"
-            android:paddingBottom="@dimen/dp24">
-
-            <TextView style="@style/PlayerLeftText"
-                android:text="@string/player_country" />
-
-            <TextView style="@style/PlayerRightText"
-                android:id="@+id/track_country"
-                android:text="@string/player_country" />
-        </FrameLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
