@@ -17,15 +17,15 @@ class HistoryRepositoryImpl(
     }
 
     override fun saveTrack(track: Track) {
-        val dtoList: MutableList<HistoryTrackDto> = searchHistoryDataSource.readTrackList().toMutableList()
+        val dtoList = searchHistoryDataSource.readTrackList().toMutableList()
 
         dtoList.removeAll { it.trackId == track.trackId }
 
-        if (dtoList.size == 10) {
-            dtoList.removeLast()
-        }
-
         dtoList.add(0, track.toHistoryTrackDto())
+
+        if (dtoList.size > 10) {
+            dtoList.removeAt(dtoList.lastIndex)
+        }
 
         searchHistoryDataSource.saveTrackList(dtoList)
     }

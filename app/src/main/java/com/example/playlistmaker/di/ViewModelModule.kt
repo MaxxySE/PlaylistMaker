@@ -1,7 +1,10 @@
 package com.example.playlistmaker.di
 
+import androidx.lifecycle.SavedStateHandle
 import com.example.playlistmaker.library.fragments.favorites.ui.viewmodel.FavoritesViewModel
 import com.example.playlistmaker.library.fragments.playlist.fragments.creation.viewmodels.CreationViewModel
+import com.example.playlistmaker.library.fragments.playlist.fragments.editplaylist.viewmodels.PlaylistEditViewModel
+import com.example.playlistmaker.library.fragments.playlist.fragments.listdetails.viewmodel.PlaylistDetailsViewModel
 import com.example.playlistmaker.library.fragments.playlist.ui.viewmodel.PlaylistViewModel
 import com.example.playlistmaker.library.ui.viewmodel.LibraryViewModel
 import com.example.playlistmaker.settings.ui.viewmodel.SettingsViewModel
@@ -48,4 +51,14 @@ val viewModelModule = module {
     viewModel {
         CreationViewModel(playlistInteractor = get())
     }
+
+    viewModel { (handle: SavedStateHandle) ->
+        PlaylistDetailsViewModel(
+            savedStateHandle = handle,
+            playlistInteractor = get()
+        )
+    }
+
+    viewModel { PlaylistEditViewModel(playlistInteractor = get()) }
+
 }
