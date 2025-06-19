@@ -115,6 +115,9 @@ class PlaylistDetailsFragment : Fragment(R.layout.fragment_playlist_details) {
                 sharePlaylist(content)
             }
         }
+        viewModel.showEmptyTracksToast.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), "В этом плейлисте нет треков", Toast.LENGTH_SHORT).show()
+        }
         viewModel.closeScreenEvent.observe(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
@@ -130,6 +133,8 @@ class PlaylistDetailsFragment : Fragment(R.layout.fragment_playlist_details) {
                 binding.listDescription.text = playlist.description.takeIf { !it.isNullOrEmpty() } ?: ""
                 binding.listDescription.visibility = if (playlist.description.isNullOrEmpty()) View.GONE else View.VISIBLE
 
+                binding.rvTracks.visibility = if (tracks.isEmpty()) View.GONE else View.VISIBLE
+
                 binding.listAmount.text = resources.getQuantityString(
                     R.plurals.track_count_plurals, playlist.trackCount, playlist.trackCount
                 )
@@ -141,7 +146,7 @@ class PlaylistDetailsFragment : Fragment(R.layout.fragment_playlist_details) {
                 Glide.with(this).load(playlist.imageUri).placeholder(R.drawable.placeholder).centerCrop().into(binding.mySquareImage)
 
                 binding.tvMenuPlaylistName.text = playlist.name
-                binding.tvMenuTrackCount.text = binding.listAmount.text // Используем уже готовую строку
+                binding.tvMenuTrackCount.text = binding.listAmount.text
                 Glide.with(this).load(playlist.imageUri).placeholder(R.drawable.placeholder).centerCrop().transform(
                     RoundedCorners(resources.getDimensionPixelSize(R.dimen.dp4))
                 ).into(binding.ivMenuPlaylistCover)

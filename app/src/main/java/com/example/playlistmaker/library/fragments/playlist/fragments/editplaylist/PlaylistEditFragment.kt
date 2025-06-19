@@ -1,9 +1,8 @@
 package com.example.playlistmaker.library.fragments.playlist.fragments.editplaylist
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -21,21 +20,28 @@ class PlaylistEditFragment : CreationFragment() {
     private lateinit var playlist: Playlist
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
 
-        playlist = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable("playlist", Playlist::class.java)!!
+        val receivedPlaylist = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable("playlist", Playlist::class.java)
         } else {
             @Suppress("DEPRECATION")
-            requireArguments().getParcelable("playlist")!!
+            requireArguments().getParcelable("playlist")
         }
 
+        if (receivedPlaylist == null) {
+            findNavController().popBackStack()
+            return
+        }
+        playlist = receivedPlaylist
 
         viewModel.init(playlist)
+        bindViews(playlist)
+    }
 
-        binding.screenTitle.text = "Редактировать"
-        binding.saveButton.text = "Сохранить"
+    private fun bindViews(playlist: Playlist) {
+        binding.screenTitle.text = getString(R.string.edit)
+        binding.saveButton.text = getString(R.string.save)
 
         binding.titleField.setText(playlist.name)
         binding.editTextDescription.setText(playlist.description)

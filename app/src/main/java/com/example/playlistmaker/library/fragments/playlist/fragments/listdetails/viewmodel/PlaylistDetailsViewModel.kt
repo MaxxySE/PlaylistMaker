@@ -25,6 +25,8 @@ class PlaylistDetailsViewModel(
     private val _closeScreenEvent = SingleLiveEvent<Unit>()
     val closeScreenEvent: LiveData<Unit> = _closeScreenEvent
 
+    private val _showEmptyTracksToast = SingleLiveEvent<Unit>()
+    val showEmptyTracksToast: LiveData<Unit> = _showEmptyTracksToast
 
     private val _sharePlaylistEvent = SingleLiveEvent<String?>()
     val sharePlaylistEvent: LiveData<String?> = _sharePlaylistEvent
@@ -37,6 +39,9 @@ class PlaylistDetailsViewModel(
     private fun loadPlaylistDetails(playlistId: Int) {
         viewModelScope.launch {
             playlistInteractor.getPlaylistDetails(playlistId).collect { details ->
+                if (details.tracks.isEmpty()) {
+                    _showEmptyTracksToast.postValue(Unit)
+                }
                 _screenState.postValue(PlaylistDetailsScreenState.Content(details))
             }
         }

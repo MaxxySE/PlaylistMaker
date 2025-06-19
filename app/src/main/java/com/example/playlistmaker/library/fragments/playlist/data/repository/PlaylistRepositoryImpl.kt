@@ -57,9 +57,18 @@ class PlaylistRepositoryImpl(
                     flowOf(PlaylistDetails(playlist = mapEntityToDomain(playlistEntity), tracks = emptyList()))
                 } else {
                     appDatabase.playlistTrackDao().getTracksByIds(trackIds.toList()).map { trackEntities ->
+
+                        val trackEntityMap = trackEntities.associateBy { it.trackId }
+
+                        val sortedTracks = trackIds.mapNotNull { id ->
+                            trackEntityMap[id]
+                        }
+
+                        val tracks = sortedTracks.asReversed().map { mapTrackEntityToDomain(it) }
+
                         PlaylistDetails(
                             playlist = mapEntityToDomain(playlistEntity),
-                            tracks = trackEntities.map { mapTrackEntityToDomain(it) }
+                            tracks = tracks
                         )
                     }
                 }
