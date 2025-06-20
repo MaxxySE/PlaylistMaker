@@ -19,12 +19,12 @@ import com.example.playlistmaker.library.fragments.playlist.fragments.creation.v
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreationFragment : Fragment(R.layout.fragment_creation) {
+open class CreationFragment : Fragment(R.layout.fragment_creation) {
 
-    private var _binding: FragmentCreationBinding? = null
-    private val binding get() = _binding!!
+    protected open var _binding: FragmentCreationBinding? = null
+    protected val binding get() = _binding!!
 
-    private val viewModel: CreationViewModel by viewModel()
+    protected open val viewModel: CreationViewModel by viewModel()
 
     private var titleTextWatcher: TextWatcher? = null
     private var imageUri: Uri? = null
@@ -58,7 +58,7 @@ class CreationFragment : Fragment(R.layout.fragment_creation) {
         binding.titleField.addTextChangedListener(titleTextWatcher)
     }
 
-    private fun setupClickListeners() {
+    open fun setupClickListeners() {
         binding.imagePlaceholder.setOnClickListener {
             pickImage()
         }
@@ -78,7 +78,7 @@ class CreationFragment : Fragment(R.layout.fragment_creation) {
         photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    private fun setupViewModelObservers() {
+    open fun setupViewModelObservers() {
         viewModel.imageUri.observe(viewLifecycleOwner) { uri ->
             if (uri != null) {
                 binding.imagePlaceholder.visibility = View.GONE
@@ -110,7 +110,7 @@ class CreationFragment : Fragment(R.layout.fragment_creation) {
         })
     }
 
-    private fun handleBackPress() {
+    open fun handleBackPress() {
         if (isFormDirty()) {
             showConfirmationDialog()
         } else {
@@ -138,7 +138,7 @@ class CreationFragment : Fragment(R.layout.fragment_creation) {
             .show()
     }
 
-    private fun closeScreen() {
+    protected fun closeScreen() {
         if (requireActivity() is CreationActivity) {
             requireActivity().finish()
         } else {

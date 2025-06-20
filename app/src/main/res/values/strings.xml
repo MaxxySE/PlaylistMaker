@@ -45,6 +45,14 @@
     <string name="settings_nav_text" translatable="false">Настройки</string>
     <string name="playlist_nav_text" translatable="false">Новый плейлист</string>
 
+    <string name="list_title" translatable="false">Имя Плейлиста</string>
+    <string name="list_description" translatable="false">Описание Плейлиста</string>
+    <string name="list_duration" translatable="false">999 минут</string>
+    <string name="list_amount" translatable="false">99 треков</string>
+
+    <string name="edit" translatable="false">Редактировать</string>
+    <string name="save" translatable="false">Сохранить</string>
+
     <plurals name="track_count_plurals" translatable="false">
         <item quantity="one">%d трек</item>
         <item quantity="few">%d трека</item>
@@ -52,4 +60,10 @@
         <item quantity="other">%d трека</item>
     </plurals>
 
+    <plurals name="duration_count_plurals" translatable="false">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минут</item>
+        <item quantity="many">%d минуты</item>
+        <item quantity="other">%d минут</item>
+    </plurals>
 </resources>

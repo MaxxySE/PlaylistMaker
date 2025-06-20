@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -28,6 +29,12 @@ class GeneralActivity : AppCompatActivity() {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
                 R.id.creationFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+                R.id.playlistDetailsFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+                R.id.playlistEditFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
                 else -> {

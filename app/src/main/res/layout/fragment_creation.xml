@@ -53,6 +53,7 @@
                     style="@style/PlayerBackBtn" />
 
                 <TextView
+                    android:id="@+id/screen_title"
                     style="@style/Title"
                     android:paddingStart="@dimen/dp28"
                     android:text="@string/playlist_nav_text" />

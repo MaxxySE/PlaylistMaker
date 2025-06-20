@@ -9,14 +9,14 @@ import com.example.playlistmaker.library.fragments.playlist.domain.api.PlaylistI
 import com.example.playlistmaker.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class CreationViewModel(
-    private val playlistInteractor: PlaylistInteractor
+open class CreationViewModel(
+    val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private val _imageUri = MutableLiveData<Uri?>()
     val imageUri: LiveData<Uri?> = _imageUri
 
-    private val _playlistCreated = SingleLiveEvent<String>()
+    val _playlistCreated = SingleLiveEvent<String>()
     val playlistCreated: LiveData<String> = _playlistCreated
 
     fun onImageSelected(uri: Uri) {

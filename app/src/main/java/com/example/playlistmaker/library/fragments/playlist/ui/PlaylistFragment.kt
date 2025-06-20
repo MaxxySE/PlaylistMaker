@@ -2,7 +2,7 @@ package com.example.playlistmaker.library.fragments.playlist.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -43,7 +43,10 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
 
     private fun setupRecyclerView() {
         playlistsAdapter = PlaylistGridAdapter { playlist ->
-            Toast.makeText(requireContext(), "Нажали на плейлист: ${playlist.name}", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(
+                R.id.action_libraryFragment_to_playlistDetailsFragment,
+                bundleOf("playlistId" to playlist.id)
+            )
         }
         binding.playlistsRecyclerView.adapter = playlistsAdapter
         binding.playlistsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)

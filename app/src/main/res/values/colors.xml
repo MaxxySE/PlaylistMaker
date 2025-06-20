@@ -17,4 +17,5 @@
 
     <color name="blue">#3772E7</color>
     <color name="darkGray">#1A1B22</color>
+    <color name="list_background">#E6E8EB</color>
 </resources>
